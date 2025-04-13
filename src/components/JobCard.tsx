@@ -29,7 +29,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
   return (
     <div className="job-card" onClick={handleCardClick}>
       <div className="job-image-container">
-        <img src={job.photoUrl} alt={job.jobTitle} className="job-image" />
+        <img src={job.photoUrl} alt={job.jobTitle} className="job-image" loading="lazy" />
       </div>
       <h3 className="job-title">{job.jobTitle}</h3>
       <p className="job-salary">Salario: {formatSalary(job.minSalary, job.maxSalary)}</p>
