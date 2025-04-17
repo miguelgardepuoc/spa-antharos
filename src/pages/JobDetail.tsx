@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { fetchJobOfferDetail } from '../api/jobsApi';
 import { JobOfferDetail } from '../types/JobOffer';
 import { v4 as uuidv4 } from 'uuid';

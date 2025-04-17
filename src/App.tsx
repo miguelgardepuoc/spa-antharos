@@ -4,12 +4,16 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import JobListings from './components/JobListings';
 import JobDetail from './pages/JobDetail';
 import Login from './pages/Login';
+import SignUp from './pages/SignUp';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
-// Wrapper component that checks the current route
 const HeaderWrapper = () => {
   const location = useLocation();
-  return location.pathname !== '/login' ? <Header /> : null;
+  const authRoutes = ['/login', '/signup'];
+  const hideHeader = authRoutes.includes(location.pathname);
+  
+  return !hideHeader ? <Header /> : null;
 };
 
 const App: React.FC = () => {
@@ -19,9 +23,15 @@ const App: React.FC = () => {
         <HeaderWrapper />
         <main>
           <Routes>
-            <Route path="/" element={<JobListings />} />
+            {/* Public routes */}
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/" element={<JobListings />} />
             <Route path="/job/:id" element={<JobDetail />} />
+            
+            {/* Protected routes */}
+            <Route element={<ProtectedRoute />}>
+            </Route>
           </Routes>
         </main>
       </div>
