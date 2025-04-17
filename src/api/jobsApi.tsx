@@ -25,3 +25,25 @@ export const fetchJobOfferDetail = async (jobOfferId: string): Promise<JobOfferD
     throw error;
   }
 };
+
+export const createJobOffer = async (jobData: any): Promise<any> => {
+  try {
+    const response = await fetch('http://localhost:8080/bff/job-offers', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+      },
+      body: JSON.stringify(jobData)
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+    
+    return;
+  } catch (error) {
+    console.error('Error creating job offer:', error);
+    throw error;
+  }
+};

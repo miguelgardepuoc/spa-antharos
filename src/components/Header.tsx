@@ -25,10 +25,10 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="main-header">
-      <div className="header-content">
-        <div className="logo">Antharos</div>
-        <div className="login-button">
+    <header className='main-header'>
+      <div className='header-content'>
+        <div className='logo'>Antharos</div>
+        <div className='login-button'>
           {isLoggedIn ? (
             <button onClick={handleLogoutClick}>Cerrar sesión</button>
           ) : (

@@ -23,7 +23,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
   };
 
   const handleCardClick = () => {
-    navigate(`/job/${job.id}`);
+    navigate(`/job-offer/${job.id}`);
   };
 
   return (

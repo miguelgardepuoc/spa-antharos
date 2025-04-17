@@ -3,13 +3,19 @@ import { JobOffer } from '../types/JobOffer';
 import { fetchJobOffers } from '../api/jobsApi';
 import JobCard from './JobCard';
 import './JobListings.css';
+import { useNavigate } from 'react-router-dom';
 
 const JobListings: React.FC = () => {
   const [jobs, setJobs] = useState<JobOffer[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    setIsLoggedIn(!!token);
+    
     const getJobs = async () => {
       try {
         setLoading(true);
@@ -27,6 +33,10 @@ const JobListings: React.FC = () => {
     getJobs();
   }, []);
 
+  const handleAddJobClick = () => {
+    navigate('/add-job');
+  };
+
   if (loading) {
     return <div className="loading">Loading job opportunities...</div>;
   }
@@ -38,7 +48,9 @@ const JobListings: React.FC = () => {
   return (
     <div className="job-listings-container">
       <div className="header-section">
-        <h1>Ofertas de empleo</h1>
+        <div className="header-top">
+          <h1>Ofertas de empleo</h1>          
+        </div>
         <p className="subtitle">
           Descubre nuevas oportunidades y construye el futuro que siempre has soñado. 
           Únete a una comunidad donde el talento y la pasión se encuentran para crear 
@@ -53,6 +65,18 @@ const JobListings: React.FC = () => {
             <JobCard job={job} />
           </div>
         ))}
+        {isLoggedIn && (
+            <button 
+              className="add-job-button" 
+              onClick={handleAddJobClick}              
+            >
+              <img 
+                src="/src/assets/plus-icon.svg" 
+                alt="Plus icon" 
+                style={{ height: '2em', width: 'auto', marginRight: '0.5em', flexShrink: 0 }} 
+              />
+            </button>
+          )}
       </div>
     </div>
   );

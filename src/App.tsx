@@ -1,12 +1,14 @@
 import React from 'react';
-import Header from './components/Header';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import Header from './components/Header';
 import JobListings from './components/JobListings';
 import JobDetail from './pages/JobDetail';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
+import {AddJobOfferPage} from './pages/AddJobOffer/index.ts';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
+
 
 const HeaderWrapper = () => {
   const location = useLocation();
@@ -24,13 +26,14 @@ const App: React.FC = () => {
         <main>
           <Routes>
             {/* Public routes */}
+            <Route path="/" element={<JobListings />} />
+            <Route path="/job-offer/:id" element={<JobDetail />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/" element={<JobListings />} />
-            <Route path="/job/:id" element={<JobDetail />} />
             
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>
+              <Route path="/add-job" element={<AddJobOfferPage />} />
             </Route>
           </Routes>
         </main>

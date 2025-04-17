@@ -1,13 +1,6 @@
-interface AuthResponse {
-    token: string;
-  }
-  
-  interface ApiError {
-    message: string;
-    status?: number;
-  }
+import { AuthResponse, ApiError } from '../types/Login';
 
-  export const signup = async (username: string, password: string): Promise<AuthResponse | ApiError> => {
+export const signup = async (username: string, password: string): Promise<AuthResponse | ApiError> => {
     try {
       const response = await fetch('http://localhost:8080/bff/auth/signup', {
         method: 'POST',
@@ -86,8 +79,7 @@ interface AuthResponse {
   };
   
   export const logout = (): void => {
-    localStorage.removeItem('authToken');
-    // Add any additional cleanup like redirecting to login page
+    localStorage.removeItem('authToken');    
   };
   
   export const isAuthenticated = (): boolean => {

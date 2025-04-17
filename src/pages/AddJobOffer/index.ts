@@ -1,0 +1,1 @@
+export { AddJobOfferPage } from './AddJobOfferPage';

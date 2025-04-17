@@ -52,3 +52,26 @@
     font-size: 32px;
   }
 }
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.add-job-button {
+  background-color: hsl(0, 20%, 98%);
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 20px;
+  height: 240px;
+}
+
+.add-job-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(217, 32, 32, 0.1);
+}
