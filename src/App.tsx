@@ -33,7 +33,7 @@ const App: React.FC = () => {
             
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>
-              <Route path="/add-job" element={<AddJobOfferPage />} />
+              <Route path="/add-job-offer" element={<AddJobOfferPage />} />
             </Route>
           </Routes>
         </main>

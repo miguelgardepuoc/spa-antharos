@@ -47,3 +47,40 @@ export const createJobOffer = async (jobData: any): Promise<any> => {
     throw error;
   }
 };
+
+export const modifyJobOffer = async (jobData: any): Promise<any> => {
+  try {
+    const response = await fetch('http://localhost:8080/bff/job-offers', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+      },
+      body: JSON.stringify(jobData)
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+    
+    return;
+  } catch (error) {
+    console.error('Error creating job offer:', error);
+    throw error;
+  }
+};
+
+export const deleteJobOffer = async (jobOfferId: string): Promise<void> => {  
+  const response = await fetch(`http://localhost:8080/bff/job-offers/${jobOfferId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+    }
+  });
+  
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || 'Error removing job offer');
+  }
+};

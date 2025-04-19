@@ -34,7 +34,7 @@ const JobListings: React.FC = () => {
   }, []);
 
   const handleAddJobClick = () => {
-    navigate('/add-job');
+    navigate('/add-job-offer');
   };
 
   if (loading) {

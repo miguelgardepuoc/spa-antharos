@@ -14,6 +14,7 @@ export interface UseFormResult {
   removeRequirement: (index: number) => void;
   touchAllFields: () => void;
   resetForm: () => void;
+  setFormState: (newState: FormState) => void; // Added this new function
 }
 
 export const useForm = (initialState: FormState): UseFormResult => {
@@ -73,6 +74,11 @@ export const useForm = (initialState: FormState): UseFormResult => {
     setTouched({});
   };
 
+  // New function to set the entire form state at once
+  const setFullFormState = (newState: FormState) => {
+    setFormState(newState);
+  };
+
   return {
     formState,
     errors,
@@ -84,6 +90,7 @@ export const useForm = (initialState: FormState): UseFormResult => {
     addRequirement,
     removeRequirement,
     touchAllFields,
-    resetForm
+    resetForm,
+    setFormState: setFullFormState // Added this to the returned object
   };
 };

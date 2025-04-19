@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { JobOfferForm } from '../types/AddJobOfferForm';
-import { createJobOffer } from '../api/jobsApi';
+import { createJobOffer, modifyJobOffer } from '../api/jobsApi';
 import { REMOTE_PERCENTAGE_MAP } from '../utils/constants';
 
 export interface SubmitState {
@@ -68,8 +67,57 @@ export const useJobOfferSubmit = () => {
     }
   };
 
+  const updateJobOffer = async (formData: JobOfferForm) => {
+
+    setSubmitState({
+      isSubmitting: true,
+      submitSuccess: null,
+      submitError: null
+    });
+    
+    try {
+      await modifyJobOffer(formData);
+      
+      setSubmitState({
+        isSubmitting: false,
+        submitSuccess: true,
+        submitError: null
+      });
+      
+      Swal.fire({
+        title: '¡Éxito!',
+        text: 'Oferta de trabajo actualizada con éxito',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+        }
+      });
+      
+      return true;
+    } catch (error) {
+      console.error('Error al actualizar oferta:', error);
+      
+      setSubmitState({
+        isSubmitting: false,
+        submitSuccess: false,
+        submitError: (error as Error).message
+      });
+      
+      Swal.fire({
+        title: 'Error',
+        text: (error as Error).message || 'Hubo un error al actualizar la oferta. Por favor, inténtalo de nuevo.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
+      
+      return false;
+    }
+  };
+
   return {
     submitState,
-    submitJobOffer
+    submitJobOffer,
+    updateJobOffer
   };
 };
