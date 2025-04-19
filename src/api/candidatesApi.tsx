@@ -36,3 +36,63 @@ import { Candidate } from '../types/Candidate';
       console.error("Error fetching SAS URL:", error);
     }
   };
+
+  export const rejectCandidate = async (candidateId: string) => {
+    const response = await fetch(`http://localhost:8080/bff/candidates/${candidateId}/reject`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Error rejecting candidate: ${response.statusText}`);
+    }
+    
+    return;
+  };
+  
+  export const interviewCandidate = async (candidateId: string) => {
+    const response = await fetch(`http://localhost:8080/bff/candidates/${candidateId}/interview`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Error setting candidate to interview: ${response.statusText}`);
+    }
+    
+    return;
+  };
+
+  export const addCandidate = async (candidate: any): Promise<any> => {
+    try {
+      const formData = new FormData();
+  
+      formData.append('id', candidate.id);
+      formData.append('personalEmail', candidate.personalEmail);
+      formData.append('jobOfferId', candidate.jobOfferId);
+      formData.append('cv', candidate.cv);
+  
+      const response = await fetch('http://localhost:8080/bff/candidates', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        },
+        body: formData
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+  
+      return;
+    } catch (error) {
+      console.error('Error creating candidate:', error);
+      throw error;
+    }
+  };

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchJobOfferDetail, deleteJobOffer } from '../api/jobsApi';
-import { fetchCandidatesByJobOffer, downloadCv } from '../api/candidatesApi';
+import { fetchCandidatesByJobOffer, downloadCv, rejectCandidate, interviewCandidate, addCandidate } from '../api/candidatesApi';
 import { JobOfferDetail } from '../types/JobOffer';
 import { Candidate } from '../types/Candidate';
 import { REMOTE_OPTIONS, REMOTE_PERCENTAGE_MAP } from '../utils/constants';
@@ -44,6 +45,7 @@ const JobDetail: React.FC = () => {
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [showHirePopup, setShowHirePopup] = useState<boolean>(false);
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
+  const [updatingCandidateId, setUpdatingCandidateId] = useState<string | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
@@ -196,7 +198,10 @@ const JobDetail: React.FC = () => {
   };
 
   const handleStatusChange = async (candidateId: string, newStatus: string) => {
-    try {      
+    try {
+      // Set updating state for UI feedback
+      setUpdatingCandidateId(candidateId);
+      
       // Find the candidate we're updating
       const candidate = candidates.find(c => c.id === candidateId);
       
@@ -209,25 +214,61 @@ const JobDetail: React.FC = () => {
       if (newStatus === 'HIRED') {
         setSelectedCandidate(candidate);
         setShowHirePopup(true);
+        setUpdatingCandidateId(null);
         return; // Don't update status yet until hire form is completed
       }
       
-      // For other statuses, update normally
-      // Here would be the logic to update the candidate status in the backend
-      console.log(`Updating candidate ${candidateId} to status ${newStatus}`);
+      let updatedCandidate;
       
-      // For now, we update only the local state
+      // Call the appropriate API based on the new status
+      switch (newStatus) {
+        case 'REJECTED':
+          updatedCandidate = await rejectCandidate(candidateId);
+          break;
+        case 'INTERVIEWING':
+          updatedCandidate = await interviewCandidate(candidateId);
+          break;
+        default:
+          console.warn(`Status change to ${newStatus} not implemented`);
+          setUpdatingCandidateId(null);
+          return;
+      }
+      
+      // Update candidates list with the new status
       setCandidates(prevCandidates => 
-        prevCandidates.map(candidate => 
-          candidate.id === candidateId 
-            ? { ...candidate, status: newStatus as 'APPLIED' | 'INTERVIEWING' | 'HIRED' | 'REJECTED' } 
-            : candidate
+        prevCandidates.map(c => 
+          c.id === candidateId 
+            ? { ...c, status: newStatus as 'APPLIED' | 'INTERVIEWING' | 'HIRED' | 'REJECTED' } 
+            : c
         )
       );
       
-      // Here a real API call would be implemented
+      // Show success message
+      Swal.fire({
+        title: 'Estado actualizado',
+        text: `El estado del candidato ha sido actualizado a ${
+          newStatus === 'REJECTED' ? 'Rechazado' : 
+          newStatus === 'INTERVIEWING' ? 'Entrevistando' : 
+          newStatus
+        }`,
+        icon: 'success',
+        confirmButtonText: 'Aceptar',
+        timer: 2000,
+        timerProgressBar: true
+      });
+      
     } catch (error) {
       console.error('Error updating candidate status:', error);
+      
+      // Show error message
+      Swal.fire({
+        title: 'Error',
+        text: 'Ha ocurrido un error al actualizar el estado del candidato.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
+    } finally {
+      setUpdatingCandidateId(null);
     }
   };
 
@@ -298,20 +339,24 @@ const JobDetail: React.FC = () => {
     try {
       setSubmitting(true);
       setStatus({ type: null, message: '' });
+
+      const candidateData = {
+        personalEmail: email,
+        id: uuidv4(),
+        cv: file,
+        jobOfferId: id
+      };
       
-      // Simulate form submission
-      setTimeout(() => {
-        setStatus({
-          type: 'success',
-          message: 'Enhorabuena! Te has inscrito correctamente en esta oferta de trabajo.'
-        });
-        
-        // Reset form
-        setEmail('');
-        setFile(null);
-        
-        setSubmitting(false);
-      }, 1500);
+      await addCandidate(candidateData);
+
+      setStatus({
+        type: 'success',
+        message: 'Enhorabuena! Te has inscrito correctamente en esta oferta de trabajo.'
+      });
+      
+      // Reset form
+      setEmail('');
+      setFile(null);
       
     } catch (error) {
       console.error('Error submitting application:', error);
@@ -319,6 +364,7 @@ const JobDetail: React.FC = () => {
         type: 'error',
         message: 'An error occurred. Please try again later.'
       });
+    } finally {
       setSubmitting(false);
     }
   };
@@ -470,12 +516,16 @@ const JobDetail: React.FC = () => {
                           value={candidate.status}
                           onChange={(e) => handleStatusChange(candidate.id, e.target.value)}
                           className={`status-select status-${candidate.status.toLowerCase()}`}
+                          disabled={updatingCandidateId === candidate.id}
                         >
                           <option value="APPLIED">Inscrito</option>
                           <option value="INTERVIEWING">Entrevistando</option>
                           <option value="HIRED">Contratado</option>
                           <option value="REJECTED">Rechazado</option>
                         </select>
+                        {updatingCandidateId === candidate.id && (
+                          <span className="updating-indicator"> ⟳</span>
+                        )}
                       </td>
                       <td>{candidate.personalEmail}</td>
                       <td>
