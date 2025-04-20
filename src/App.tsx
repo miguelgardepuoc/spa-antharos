@@ -1,13 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import Header from './components/Header';
-import JobListings from './components/JobListings';
+import Header from './components/header/Header';
+import JobListings from './components/joblistings/JobListings';
 import ProtectedRoute from './components/ProtectedRoute';
-import JobDetail from './pages/JobDetail';
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
-import { AddJobOfferPage } from './pages/AddJobOffer';
-import CorporateManagement from './pages/CorporateManagement';
+import JobDetail from './pages/jobofferdetail/JobOfferDetail';
+import Login from './pages/login/Login';
+import SignUp from './pages/signup/SignUp';
+import { AddJobOfferPage } from './pages/addjoboffer';
+import CorporateManagement from './pages/corporatemanagement/CorporateManagement';
 import './App.css';
 
 // Routes configuration

@@ -1,36 +1,95 @@
-  .department-table-container {
-    max-height: 350px;
-    overflow-y: auto;
-    border: 1px solid var(--medium-gray);
-    border-radius: var(--radius-md);
-    margin-top: 1rem;
-  }
-  
-  .department-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .department-table th,
-  .department-table td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid var(--light-gray);
-  }
-  
-  .department-table th {
-    position: sticky;
-    top: 0;
-    background-color: #f8fafc;
-    font-weight: 600;
-    color: var(--text-light);
-    z-index: 1;
-  }
-  
-  .department-table tr:hover {
-    background-color: #f8fafc;
-  }
-  
-  .department-table tr:last-child td {
-    border-bottom: none;
-  }
+/* Estilos existentes */
+.department-table-container {
+  max-height: 350px;
+  overflow-y: auto;
+  border: 1px solid var(--medium-gray);
+  border-radius: var(--radius-md);
+  margin-top: 1rem;
+}
+
+.department-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.department-table th,
+.department-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.department-table th {
+  position: sticky;
+  top: 0;
+  background-color: #f8fafc;
+  font-weight: 600;
+  color: var(--text-light);
+  z-index: 1;
+}
+
+.department-table tr:hover {
+  background-color: #f8fafc;
+}
+
+.department-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Nuevos estilos para el menú desplegable */
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-button:hover {
+  background-color: var(--light-gray, #e2e8f0);
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  z-index: 10;
+  min-width: 150px;
+  background-color: white;
+  border: 1px solid var(--light-gray, #e2e8f0);
+  border-radius: var(--radius-md, 4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.menu-item:hover {
+  background-color: var(--light-gray, #f1f5f9);
+}
+
+.menu-item .material-icons {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+.menu-item span {
+  white-space: nowrap;
+}

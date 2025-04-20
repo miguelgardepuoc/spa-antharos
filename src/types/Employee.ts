@@ -11,4 +11,4 @@ export interface Employee {
   }
 
 
-  export type EmployeeStatus = 'Activo' | 'Baja' | 'Suspendido';
+  export type EmployeeStatus = 'ACTIVE' | 'ON_LEAVE' | 'TERMINATED' | 'INACTIVE';

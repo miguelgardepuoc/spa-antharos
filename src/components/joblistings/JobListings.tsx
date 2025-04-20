@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { JobOffer } from '../types/JobOffer';
-import { fetchJobOffers } from '../services/jobOfferService';
-import JobCard from './JobCard';
+import { JobOffer } from '../../types/JobOffer';
+import { fetchJobOffers } from '../../services/jobOfferService';
+import JobCard from '../jobcard/JobCard';
 import './JobListings.css';
 import { useNavigate } from 'react-router-dom';
 

@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signup } from '../services/authService';
-import './SignUpPage.css';
+import { signup } from '../../services/authService';
+import './SignUp.css';
 
 export default function SignUp() {
     const [username, setUsername] = useState('');
@@ -31,14 +31,10 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     
     try {
         const result = await signup(username, password);
-        
-        if ('message' in result) {
-          setApiError(result.message);
-        } else {
           console.log('Signup successful:', result);
-          navigate('/');
-        }
+          navigate('/login');
       } catch (err) {
+        console.log('Signup successful:', err);
         setApiError('An unexpected error occurred. Please try again.');
       } finally {
         setIsLoading(false);

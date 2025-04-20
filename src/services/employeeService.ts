@@ -1,5 +1,5 @@
 import apiClient from './apiClient';
-import { Employee, EmployeeStatus  } from '../types/Employee';
+import { Employee  } from '../types/Employee';
 
 export const fetchEmployees = async (): Promise<Employee[]> => {
   try {
@@ -11,21 +11,29 @@ export const fetchEmployees = async (): Promise<Employee[]> => {
   }
 };
 
-export const updateEmployeeStatus = async (
-  employeeId: String, 
-  status: EmployeeStatus
-): Promise<boolean> => {
+export const putEmployeeOnLeave = async (id: string): Promise<void> => {
   try {
-    const response = await fetch(`/api/employees/${employeeId}/status`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ status }),
-    });
-    return response.ok;
+    await apiClient.patch(`/employees/${id}/on-leave`);
   } catch (error) {
-    console.error('Error updating employee status:', error);
-    return false;
+    console.error(`Error changing employee ${id} status to on leave:`, error);
+    throw error;
+  }
+};
+
+export const terminateEmployee = async (id: string): Promise<void> => {
+  try {
+    await apiClient.patch(`/employees/${id}/termination`);
+  } catch (error) {
+    console.error(`Error terminating employee ${id}:`, error);
+    throw error;
+  }
+};
+
+export const markEmployeeAsInactive = async (id: string): Promise<void> => {
+  try {
+    await apiClient.patch(`/employees/${id}/inactivation`);
+  } catch (error) {
+    console.error(`Error marking employee ${id} as inactive:`, error);
+    throw error;
   }
 };

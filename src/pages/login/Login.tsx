@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './LoginPage.css';
-import { login } from '../services/authService';
+import './Login.css';
+import { login } from '../../services/authService';
 
 export default function BookshelfLoginPage() {
   const [username, setUsername] = useState('');
@@ -21,7 +21,6 @@ export default function BookshelfLoginPage() {
       if ('message' in result) {
         setError(result.message);
       } else {
-        console.log('Login successful:', result);
         navigate('/');
       }
     } catch (err) {

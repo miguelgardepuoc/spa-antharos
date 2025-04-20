@@ -1,5 +1,5 @@
 import React from 'react';
-import { JobOffer } from '../types/JobOffer';
+import { JobOffer } from '../../types/JobOffer';
 import { useNavigate } from 'react-router-dom';
 import './JobCard.css';
 

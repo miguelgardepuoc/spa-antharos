@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchJobOfferDetail, deleteJobOffer } from '../services/jobOfferService';
-import { fetchCandidatesByJobOffer, downloadCv, rejectCandidate, interviewCandidate, addCandidate } from '../services/candidateService';
-import { JobOfferDetail } from '../types/JobOffer';
-import { Candidate } from '../types/Candidate';
-import { REMOTE_OPTIONS, REMOTE_PERCENTAGE_MAP } from '../utils/constants';
+import { fetchJobOfferDetail, deleteJobOffer } from '../../services/jobOfferService';
+import { fetchCandidatesByJobOffer, downloadCv, rejectCandidate, interviewCandidate, addCandidate } from '../../services/candidateService';
+import { JobOfferDetail } from '../../types/JobOffer';
+import { Candidate } from '../../types/Candidate';
+import { REMOTE_OPTIONS, REMOTE_PERCENTAGE_MAP } from '../../utils/constants';
 import Swal from 'sweetalert2';
-import './JobDetail.css';
-import HireCandidatePopup from '../components/HireCandidatePopup';
+import './JobOfferDetail.css';
+import HireCandidatePopup from '../../components/hirecandidatepopup/HireCandidatePopup';
 
 // Types
 interface SubmissionStatus {

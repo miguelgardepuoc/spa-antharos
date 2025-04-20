@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Department } from '../types/Department';
-import { Employee } from '../types/Employee';
-import DepartmentTable from '../components/table/DepartmentTable';
-import EmployeeTable from '../components/table/EmployeeTable';
-import { fetchEmployees } from '../services/employeeService';
-import { 
-  fetchDepartments, 
-  renameDepartment, 
+import { Department } from '../../types/Department';
+import { Employee } from '../../types/Employee';
+import DepartmentTable from '../../components/table/DepartmentTable';
+import EmployeeTable from '../../components/table/EmployeeTable';
+import { fetchEmployees } from '../../services/employeeService';
+import {
+  fetchDepartments,
+  renameDepartment,
   deleteDepartment,
-  addDepartment 
-} from '../services/departmentService';
+  addDepartment
+} from '../../services/departmentService';
 import './CorporateManagement.css';
 
 const CorporateManagement: React.FC = () => {
@@ -21,13 +21,10 @@ const CorporateManagement: React.FC = () => {
   const [showRenameModal, setShowRenameModal] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
-  
+
   // Employee state
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
-  const [employeesPerPage] = useState<number>(10);
-  
+
   // Shared state
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -36,15 +33,14 @@ const CorporateManagement: React.FC = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        
+
         // Fetch departments
         const departmentsData = await fetchDepartments();
         setDepartments(departmentsData);
-        
+
         // Fetch employees
         const employeesData = await fetchEmployees();
         setEmployees(employeesData);
-        setTotalPages(Math.ceil(employeesData.length / employeesPerPage));
       } catch (err) {
         setError('Error al cargar los datos corporativos');
         console.error(err);
@@ -54,7 +50,7 @@ const CorporateManagement: React.FC = () => {
     };
 
     fetchData();
-  }, [employeesPerPage]);
+  }, []);
 
   // Department handlers
   const handleRenameClick = (department: Department) => {
@@ -70,12 +66,12 @@ const CorporateManagement: React.FC = () => {
 
   const handleRenameSubmit = async () => {
     if (!selectedDepartment || !newDepartmentName.trim()) return;
-    
+
     try {
       await renameDepartment(selectedDepartment.id, newDepartmentName);
-      setDepartments(departments.map(dept => 
-        dept.id === selectedDepartment.id 
-          ? { ...dept, description: newDepartmentName } 
+      setDepartments(departments.map(dept =>
+        dept.id === selectedDepartment.id
+          ? { ...dept, description: newDepartmentName }
           : dept
       ));
       setShowRenameModal(false);
@@ -87,7 +83,7 @@ const CorporateManagement: React.FC = () => {
 
   const handleDeleteSubmit = async () => {
     if (!selectedDepartment) return;
-    
+
     try {
       await deleteDepartment(selectedDepartment.id);
       setDepartments(departments.filter(dept => dept.id !== selectedDepartment.id));
@@ -100,7 +96,7 @@ const CorporateManagement: React.FC = () => {
 
   const handleAddDepartment = async () => {
     if (!newDepartment.trim()) return;
-    
+
     try {
       const department = await addDepartment(newDepartment);
       setDepartments([...departments, department]);
@@ -110,17 +106,6 @@ const CorporateManagement: React.FC = () => {
       setError('Error al añadir el departamento');
       console.error(err);
     }
-  };
-
-  // Employee handlers
-  const getCurrentPageEmployees = () => {
-    const startIndex = (currentPage - 1) * employeesPerPage;
-    const endIndex = startIndex + employeesPerPage;
-    return employees.slice(startIndex, endIndex);
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
   };
 
   if (loading) {
@@ -138,32 +123,20 @@ const CorporateManagement: React.FC = () => {
       {/* Employees Section */}
       <section className="employees-section">
         <h2>Plantilla</h2>
-        <EmployeeTable employees={getCurrentPageEmployees()} />
-        
-        <div className="pagination">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-            <button
-              key={page}
-              className={page === currentPage ? 'active' : ''}
-              onClick={() => handlePageChange(page)}
-            >
-              {page}
-            </button>
-          ))}
-        </div>
+        <EmployeeTable employees={employees} />
       </section>
-      
+
       {/* Departments Section */}
       <section className="departments-section">
         <h2>Departamentos</h2>
-        <DepartmentTable 
-          departments={departments} 
-          onRename={handleRenameClick} 
-          onDelete={handleDeleteClick} 
+        <DepartmentTable
+          departments={departments}
+          onRename={handleRenameClick}
+          onDelete={handleDeleteClick}
         />
-        
+
         <div className="add-department-button-container">
-          <button 
+          <button
             className="add-department-button"
             onClick={() => setShowAddModal(true)}
           >
@@ -187,13 +160,13 @@ const CorporateManagement: React.FC = () => {
               />
             </div>
             <div className="modal-actions">
-              <button 
+              <button
                 className="cancel-button"
                 onClick={() => setShowRenameModal(false)}
               >
                 Cancelar
               </button>
-              <button 
+              <button
                 className="confirm-button"
                 onClick={handleRenameSubmit}
               >
@@ -213,13 +186,13 @@ const CorporateManagement: React.FC = () => {
               <p>¿Estás seguro que deseas eliminar el departamento "{selectedDepartment.description}"?</p>
             </div>
             <div className="modal-actions">
-              <button 
+              <button
                 className="cancel-button"
                 onClick={() => setShowDeleteModal(false)}
               >
                 Cancelar
               </button>
-              <button 
+              <button
                 className="delete-button"
                 onClick={handleDeleteSubmit}
               >
@@ -244,13 +217,13 @@ const CorporateManagement: React.FC = () => {
               />
             </div>
             <div className="modal-actions">
-              <button 
+              <button
                 className="cancel-button"
                 onClick={() => setShowAddModal(false)}
               >
                 Cancelar
               </button>
-              <button 
+              <button
                 className="confirm-button"
                 onClick={handleAddDepartment}
               >
