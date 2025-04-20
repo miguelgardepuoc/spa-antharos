@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchJobOfferDetail, deleteJobOffer } from '../api/jobsApi';
-import { fetchCandidatesByJobOffer, downloadCv, rejectCandidate, interviewCandidate, addCandidate } from '../api/candidatesApi';
+import { fetchJobOfferDetail, deleteJobOffer } from '../services/jobOfferService';
+import { fetchCandidatesByJobOffer, downloadCv, rejectCandidate, interviewCandidate, addCandidate } from '../services/candidateService';
 import { JobOfferDetail } from '../types/JobOffer';
 import { Candidate } from '../types/Candidate';
 import { REMOTE_OPTIONS, REMOTE_PERCENTAGE_MAP } from '../utils/constants';

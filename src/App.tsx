@@ -1,21 +1,34 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import JobListings from './components/JobListings';
+import ProtectedRoute from './components/ProtectedRoute';
 import JobDetail from './pages/JobDetail';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
-import {AddJobOfferPage} from './pages/AddJobOffer/index.ts';
-import ProtectedRoute from './components/ProtectedRoute';
+import { AddJobOfferPage } from './pages/AddJobOffer';
+import CorporateManagement from './pages/CorporateManagement';
 import './App.css';
 
+// Routes configuration
+const PUBLIC_ROUTES = [
+  { path: '/job-offers', element: <JobListings /> },
+  { path: '/job-offer/:id', element: <JobDetail /> },
+  { path: '/login', element: <Login /> },
+  { path: '/signup', element: <SignUp /> }
+];
 
-const HeaderWrapper = () => {
+const PROTECTED_ROUTES = [
+  { path: '/add-job-offer', element: <AddJobOfferPage /> },
+  { path: '/corporate-management', element: <CorporateManagement /> }
+];
+
+// Header logic extracted to its own component
+const HeaderWrapper: React.FC = () => {
   const location = useLocation();
-  const authRoutes = ['/login', '/signup'];
-  const hideHeader = authRoutes.includes(location.pathname);
+  const AUTH_PATHS = ['/login', '/signup'];
   
-  return !hideHeader ? <Header /> : null;
+  return AUTH_PATHS.includes(location.pathname) ? null : <Header />;
 };
 
 const App: React.FC = () => {
@@ -25,16 +38,23 @@ const App: React.FC = () => {
         <HeaderWrapper />
         <main>
           <Routes>
+            {/* Redirect root to job offers */}
+            <Route path="/" element={<Navigate to="/job-offers" replace />} />
+            
             {/* Public routes */}
-            <Route path="/" element={<JobListings />} />
-            <Route path="/job-offer/:id" element={<JobDetail />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
+            {PUBLIC_ROUTES.map(route => (
+              <Route key={route.path} path={route.path} element={route.element} />
+            ))}
             
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>
-              <Route path="/add-job-offer" element={<AddJobOfferPage />} />
+              {PROTECTED_ROUTES.map(route => (
+                <Route key={route.path} path={route.path} element={route.element} />
+              ))}
             </Route>
+            
+            {/* Catch all route - redirect to job listings */}
+            <Route path="*" element={<Navigate to="/job-offers" replace />} />
           </Routes>
         </main>
       </div>

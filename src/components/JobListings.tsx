@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { JobOffer } from '../types/JobOffer';
-import { fetchJobOffers } from '../api/jobsApi';
+import { fetchJobOffers } from '../services/jobOfferService';
 import JobCard from './JobCard';
 import './JobListings.css';
 import { useNavigate } from 'react-router-dom';

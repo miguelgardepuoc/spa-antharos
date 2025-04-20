@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {fetchDepartments} from '../api/departmentsApi.tsx';
+import {fetchDepartments} from '../services/departmentService.ts';
 import { Department } from '../types/Department.tsx';
 import { HireCandidateData } from '../types/Candidate.tsx';
 import './HireCandidatePopup.css';

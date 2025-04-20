@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { JobTitle } from '../types/JobTitle';
-import { fetchJobTitles } from '../api/jobTitlesApi';
+import { fetchJobTitles } from '../services/jobTitlesService';
 
 export const useJobTitles = () => {
   const [jobTitles, setJobTitles] = useState<JobTitle[]>([]);

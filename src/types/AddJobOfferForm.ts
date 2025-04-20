@@ -1,4 +1,4 @@
-import { JobTitle } from '../types/JobTitle';
+import { JobTitle } from './JobTitle';
 
 export interface JobOfferForm {
     id: string;

@@ -1,0 +1,368 @@
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #1e40af;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --light-gray: #f3f4f6;
+    --medium-gray: #d1d5db;
+    --dark-gray: #4b5563;
+    --text-dark: #1f2937;
+    --text-light: #6b7280;
+    --white: #ffffff;
+    --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --radius-sm: 0.25rem;
+    --radius-md: 0.375rem;
+    --radius-lg: 0.5rem;
+  }
+  
+  /* Main container */
+  .corporate-management {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+  }
+  
+  .corporate-management h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 2rem;
+    color: var(--text-dark);
+    position: relative;
+    padding-bottom: 0.75rem;
+  }
+  
+  .corporate-management h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 4rem;
+    background-color: var(--primary-color);
+  }
+  
+  /* Section styling */
+  .departments-section,
+  .employees-section {
+    background-color: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 2.5rem;
+  }
+  
+  .departments-section h2,
+  .employees-section h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--text-dark);
+    position: relative;
+    padding-bottom: 0.5rem;
+  }
+  
+  .departments-section h2::after,
+  .employees-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 3rem;
+    background-color: var(--primary-color);
+  }
+  
+  /* Loading and error states */
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    font-size: 1.125rem;
+    color: var(--text-light);
+  }
+  
+  .error {
+    background-color: #fee2e2;
+    color: var(--danger-color);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    margin: 2rem 0;
+    text-align: center;
+    font-weight: 500;
+  }
+  
+  /* Tables styling */
+  .table-container {
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th,
+  td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--light-gray);
+  }
+  
+  th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    color: var(--text-light);
+  }
+  
+  tr:hover {
+    background-color: #f8fafc;
+  }
+  
+  tr:last-child td {
+    border-bottom: none;
+  }
+  
+  /* Action buttons in tables */
+  .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .rename-button,
+  .delete-button {
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .rename-button {
+    background-color: var(--light-gray);
+    color: var(--primary-color);
+  }
+  
+  .rename-button:hover {
+    background-color: #dbeafe;
+  }
+  
+  .delete-button {
+    background-color: var(--light-gray);
+    color: var(--danger-color);
+  }
+  
+  .delete-button:hover {
+    background-color: #fee2e2;
+  }
+  
+  /* Add department button */
+  .add-department-button-container {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .add-department-button {
+    padding: 0.75rem 1.25rem;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .add-department-button:hover {
+    background-color: var(--secondary-color);
+  }
+  
+  .add-department-button .material-icon {
+    font-size: 1.125rem;
+  }
+  
+  /* Pagination */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  .pagination button {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--radius-sm);
+    background-color: var(--white);
+    color: var(--text-dark);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .pagination button:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+  }
+  
+  .pagination button.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--white);
+  }
+  
+  /* Modal styling */
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal {
+    background-color: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .modal h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--text-dark);
+  }
+  
+  .modal-content {
+    margin-bottom: 1.5rem;
+  }
+  
+  .modal-content p {
+    color: var(--text-light);
+    margin: 0;
+  }
+  
+  .modal-content input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+  }
+  
+  .modal-content input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+  
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+  
+  .cancel-button,
+  .confirm-button,
+  .delete-button {
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .cancel-button {
+    background-color: var(--white);
+    color: var(--text-dark);
+    border: 1px solid var(--medium-gray);
+  }
+  
+  .cancel-button:hover {
+    background-color: var(--light-gray);
+  }
+  
+  .confirm-button {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+  }
+  
+  .confirm-button:hover {
+    background-color: var(--secondary-color);
+  }
+  
+  .modal-actions .delete-button {
+    background-color: var(--danger-color);
+    color: var(--white);
+    border: none;
+  }
+  
+  .modal-actions .delete-button:hover {
+    background-color: #dc2626;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .corporate-management h1 {
+      font-size: 1.75rem;
+    }
+    
+    .departments-section,
+    .employees-section {
+      padding: 1.5rem;
+    }
+    
+    th, td {
+      padding: 0.75rem;
+    }
+    
+    .modal {
+      width: 90%;
+      padding: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .pagination {
+      flex-wrap: wrap;
+    }
+    
+    .modal-actions {
+      flex-direction: column;
+    }
+    
+    .add-department-button-container {
+      justify-content: center;
+    }
+  }

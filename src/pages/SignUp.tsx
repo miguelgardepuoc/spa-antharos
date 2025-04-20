@@ -1,6 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signup } from '../api/authApi';
+import { signup } from '../services/authService';
 import './SignUpPage.css';
 
 export default function SignUp() {

@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginPage.css';
-import { login } from '../api/authApi';
+import { login } from '../services/authService';
 
 export default function BookshelfLoginPage() {
   const [username, setUsername] = useState('');
