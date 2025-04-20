@@ -1,4 +1,4 @@
-import { RequirementsListProps } from '../../../types/FormComponents';
+import { RequirementsListProps } from '../../../types/formComponents';
 import './RequirementsList.css';
 
 export const RequirementsList = ({ 

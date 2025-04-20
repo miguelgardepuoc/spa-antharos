@@ -3,11 +3,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import Header from './components/header/Header';
 import JobListings from './components/joblistings/JobListings';
 import ProtectedRoute from './components/ProtectedRoute';
-import JobDetail from './pages/jobofferdetail/JobOfferDetail';
+import JobDetail from './pages/job-offer-detail/JobOfferDetail';
 import Login from './pages/login/Login';
 import SignUp from './pages/signup/SignUp';
-import { AddJobOfferPage } from './pages/addjoboffer';
-import CorporateManagement from './pages/corporatemanagement/CorporateManagement';
+import { AddJobOfferPage } from './pages/add-job-offer';
+import CorporateManagement from './pages/corporate-management/CorporateManagement';
+import {PeopleAnalytics} from './pages/people-analytics/PeopleAnalytics';
 import './App.css';
 
 // Routes configuration
@@ -20,7 +21,8 @@ const PUBLIC_ROUTES = [
 
 const PROTECTED_ROUTES = [
   { path: '/add-job-offer', element: <AddJobOfferPage /> },
-  { path: '/corporate-management', element: <CorporateManagement /> }
+  { path: '/corporate-management', element: <CorporateManagement /> },
+  { path: '/people-analytics', element: <PeopleAnalytics /> }
 ];
 
 // Header logic extracted to its own component

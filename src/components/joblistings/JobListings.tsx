@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { JobOffer } from '../../types/JobOffer';
+import { JobOffer } from '../../types/jobOffer';
 import { fetchJobOffers } from '../../services/jobOfferService';
 import JobCard from '../jobcard/JobCard';
 import './JobListings.css';

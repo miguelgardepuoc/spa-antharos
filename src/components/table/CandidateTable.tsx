@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Candidate } from '../../types/Candidate';
+import { Candidate } from '../../types/candidate';
 import { 
   fetchCandidatesByJobOffer, 
   downloadCv, 
   rejectCandidate, 
   interviewCandidate 
 } from '../../services/candidateService';
-import Table, { Column } from '../common/Table/Table';
+import Table, { Column } from '../common/table/Table';
 import Swal from 'sweetalert2';
 
 interface CandidatesTableProps {

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { DropdownProps } from '../../../types/FormComponents';
+import { DropdownProps } from '../../../types/formComponents';
 import './Dropdown.css';
 
 export function Dropdown<T>({ 

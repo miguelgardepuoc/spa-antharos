@@ -1,5 +1,5 @@
 import apiClient from './apiClient';
-import { JobTitle } from '../types/JobTitle';
+import { JobTitle } from '../types/jobTitle';
 
 export const fetchJobTitles = async (): Promise<JobTitle[]> => {
   try {

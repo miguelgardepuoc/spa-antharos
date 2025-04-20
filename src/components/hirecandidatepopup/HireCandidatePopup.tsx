@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {fetchDepartments} from '../../services/departmentService.ts';
-import { Department } from '../../types/Department.tsx';
-import { HireCandidateData } from '../../types/Candidate.tsx';
+import { Department } from '../../types/department.ts';
+import { HireCandidateData } from '../../types/candidate.ts';
 import './HireCandidatePopup.css';
 
 interface HireCandidatePopupProps {

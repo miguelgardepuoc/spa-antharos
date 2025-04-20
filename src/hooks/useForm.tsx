@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { FormState, FormErrors } from '../types/AddJobOfferForm';
+import { FormState, FormErrors } from '../types/addJobOfferForm';
 import { validateJobOfferForm } from '../utils/validators';
 
 export interface UseFormResult {

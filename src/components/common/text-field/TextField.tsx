@@ -1,4 +1,4 @@
-import { TextFieldProps } from '../../../types/FormComponents';
+import { TextFieldProps } from '../../../types/formComponents';
 import './TextField.css';
 
 export const TextField = ({ 

@@ -1,4 +1,4 @@
-import { ButtonProps } from '../../../types/FormComponents';
+import { ButtonProps } from '../../../types/formComponents';
 import './Button.css';
 
 export const Button = ({ 

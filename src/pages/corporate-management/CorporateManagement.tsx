@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Department } from '../../types/Department';
-import { Employee } from '../../types/Employee';
+import { Department } from '../../types/department';
+import { Employee } from '../../types/employee';
 import DepartmentTable from '../../components/table/DepartmentTable';
 import EmployeeTable from '../../components/table/EmployeeTable';
 import { fetchEmployees } from '../../services/employeeService';

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Employee, EmployeeStatus } from '../../types/Employee';
+import { Employee, EmployeeStatus } from '../../types/employee';
 import { fetchEmployees, markEmployeeAsInactive, putEmployeeOnLeave, terminateEmployee } from '../../services/employeeService';
-import Table, { Column } from '../common/Table/Table';
+import Table, { Column } from '../common/table/Table';
 import { showConfirmationAlert } from '../../utils/alerts';
 import './EmployeeTable.css';
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { JobTitle } from '../types/JobTitle';
+import { JobTitle } from '../types/jobTitle';
 import { fetchJobTitles } from '../services/jobTitlesService';
 
 export const useJobTitles = () => {

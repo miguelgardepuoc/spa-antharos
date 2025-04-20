@@ -1,5 +1,5 @@
 import apiClient from './apiClient';
-import { AuthResponse, ApiError } from '../types/Login';
+import { AuthResponse, ApiError } from '../types/login';
 
 export const signup = async (username: string, password: string): Promise<AuthResponse | ApiError> => {
   try {

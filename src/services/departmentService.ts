@@ -1,5 +1,5 @@
 import apiClient from './apiClient';
-import { Department } from '../types/Department';
+import { Department } from '../types/department';
 import { v4 as uuidv4 } from 'uuid';
 
 export const fetchDepartments = async (): Promise<Department[]> => {

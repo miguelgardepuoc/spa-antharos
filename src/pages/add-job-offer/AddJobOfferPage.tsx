@@ -1,15 +1,15 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
-import { TextField } from '../../components/common/TextField';
-import { Dropdown } from '../../components/common/Dropdown';
-import { Button } from '../../components/common/Button';
+import { TextField } from '../../components/common/text-field';
+import { Dropdown } from '../../components/common/dropdown';
+import { Button } from '../../components/common/button';
 import { RequirementsList } from '../../components/forms/requirements';
 import { useJobTitles } from '../../hooks/useJobTitles';
 import { useForm } from '../../hooks/useForm';
 import { useJobOfferSubmit } from '../../hooks/useJobOfferSubmit';
-import { JobTitle } from '../../types/JobTitle';
-import { FormState } from '../../types/AddJobOfferForm';
+import { JobTitle } from '../../types/jobTitle';
+import { FormState } from '../../types/addJobOfferForm';
 import { REMOTE_OPTIONS, REMOTE_PERCENTAGE_MAP } from '../../utils/constants';
 import './AddJobOfferPage.css';
 
