@@ -118,7 +118,7 @@ const CorporateManagement: React.FC = () => {
 
   return (
     <div className="corporate-management">
-      <h1>Gestión corporativa</h1>
+      <h1>Gestión Corporativa</h1>
 
       {/* Employees Section */}
       <section className="employees-section">

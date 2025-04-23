@@ -35,7 +35,7 @@ export const login = async (username: string, password: string): Promise<AuthRes
     console.error('Login error:', error);
     if (error.response) {
       return { 
-        message: error.response.data.message || 'Login failed', 
+        message: error.response.data.message || 'Login fallido', 
         status: error.response.status 
       };
     }

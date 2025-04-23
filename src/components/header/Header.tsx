@@ -28,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({
   // Navigation items configuration
   const navigationItems: NavigationItem[] = [
     { path: '/job-offers', label: 'Ofertas de empleo' },       
-    { path: '/corporate-management', label: 'Gestión corporativa' },
+    { path: '/corporate-management', label: 'Gestión Corporativa' },
     { path: '/people-analytics', label: 'People Analytics' }
   ];
 

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { JobOffer } from '../../types/jobOffer';
 import { fetchJobOffers } from '../../services/jobOfferService';
-import JobCard from '../jobcard/JobCard';
-import './JobListings.css';
+import JobCard from '../../components/jobcard/JobCard';
+import './JobOfferPortal.css';
 import { useNavigate } from 'react-router-dom';
 
-const JobListings: React.FC = () => {
+const JobOfferPortal: React.FC = () => {
   const [jobs, setJobs] = useState<JobOffer[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -82,4 +82,4 @@ const JobListings: React.FC = () => {
   );
 };
 
-export default JobListings;
+export default JobOfferPortal;

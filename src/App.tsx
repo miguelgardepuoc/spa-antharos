@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/header/Header';
-import JobListings from './components/joblistings/JobListings';
+import JobOfferPortal from './pages/job-offer-portal/JobOfferPortal';
 import ProtectedRoute from './components/ProtectedRoute';
 import JobDetail from './pages/job-offer-detail/JobOfferDetail';
 import Login from './pages/login/Login';
@@ -13,7 +13,7 @@ import './App.css';
 
 // Routes configuration
 const PUBLIC_ROUTES = [
-  { path: '/job-offers', element: <JobListings /> },
+  { path: '/job-offers', element: <JobOfferPortal /> },
   { path: '/job-offer/:id', element: <JobDetail /> },
   { path: '/login', element: <Login /> },
   { path: '/signup', element: <SignUp /> }

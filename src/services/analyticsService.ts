@@ -1,42 +1,87 @@
-import { AnalyticsData } from '../types/analytics';
+import apiClient from './apiClient';
+import { 
+  AnalyticsData, 
+  DashboardApiResponse,
+  EmployeeEvolutionData
+} from '../types/analytics';
+
+const COLOR_PALETTE = [
+  '#4285F4', '#EA4335', '#FBBC05', '#34A853',
+  '#8E24AA', '#F06292', '#FF9800', '#009688',
+  '#3F51B5', '#607D8B', '#795548', '#9E9E9E',
+];
+
+const assignColors = <T extends Record<string, any>>(
+  items: T[]
+): (T & { color: string })[] => {
+  return items.map((item, index) => ({
+    ...item,
+    color: COLOR_PALETTE[index % COLOR_PALETTE.length]
+  }));
+};
+
+const mergeEmployeeAndSalaryData = (
+  employeeCounts: DashboardApiResponse['employeeCounts'],
+  salaryCosts: DashboardApiResponse['salaryCosts']
+): EmployeeEvolutionData[] => {
+  const salaryMap = new Map(salaryCosts.map(item => [item.month, item.totalSalary]));
+
+  const sortedCounts = [...employeeCounts].sort(
+    (a, b) => new Date(a.month).getTime() - new Date(b.month).getTime()
+  );
+
+  return sortedCounts.map(item => {
+    const date = new Date(item.month);
+    const monthName = date.toLocaleString('default', { month: 'long' });
+
+    return {
+      month: monthName,
+      count: item.totalEmployees,
+      cost: salaryMap.get(item.month) ?? 0
+    };
+  });
+};
+
+const transformApiResponse = (apiData: DashboardApiResponse): AnalyticsData => {
+  const employeeEvolution = mergeEmployeeAndSalaryData(
+    apiData.employeeCounts, 
+    apiData.salaryCosts
+  );
+
+  const departmentDistribution = assignColors(
+    apiData.departmentEmployees.map(dept => ({
+      name: dept.department,
+      percentage: dept.percentage
+    }))
+  );
+
+  const departmentCostDistribution = assignColors(
+    apiData.departmentSalaries.map(dept => ({
+      name: dept.department,
+      percentage: dept.percentage
+    }))
+  );
+
+  const techRolesDistribution = assignColors(
+    apiData.jobTitleEmployees.map(job => ({
+      name: job.jobTitle,
+      percentage: job.percentage
+    }))
+  );
+
+  return {
+    employeeEvolution,
+    departmentDistribution,
+    departmentCostDistribution,
+    techRolesDistribution
+  };
+};
 
 export const fetchAnalyticsData = async (): Promise<AnalyticsData> => {
-  // For development, return mock data
-  return Promise.resolve(mockAnalyticsData);
-  
-  // For production, use the actual API
-  // try {
-  //   const response = await fetch('/api/analytics');
-  //   if (!response.ok) {
-  //     throw new Error('Failed to fetch analytics data');
-  //   }
-  //   return await response.json();
-  // } catch (error) {
-  //   console.error('Error fetching analytics data:', error);
-  //   throw error;
-  // }
-}
+  const response = await apiClient.get('/reports/dashboard');
+  if (!response.data) {
+    throw new Error('No data received from API');
+  }
 
-export const mockAnalyticsData: AnalyticsData = {
-  employeeEvolution: [
-    { month: 'Abril', count: 2268, cost: 7800000 },
-    { month: 'Junio', count: 3008, cost: 10200000 },
-    { month: 'Julio', count: 3099, cost: 10200000 },
-    { month: 'Agosto', count: 3099, cost: 10200000 },
-    { month: 'Septiembre', count: 3763, cost: 12900000 }
-  ],
-  departmentDistribution: [
-    { name: 'RRHH', percentage: 12, color: '#4285F4' },
-    { name: 'Marketing', percentage: 8, color: '#EA4335' },
-    { name: 'Finanzas', percentage: 8, color: '#FBBC05' },
-    { name: 'Ventas', percentage: 8, color: '#34A853' },
-    { name: 'Tecnología', percentage: 64, color: '#8E24AA' }
-  ],
-  techRolesDistribution: [
-    { role: 'Analyst', percentage: 12, color: '#4285F4' },
-    { role: 'Product Owner', percentage: 8, color: '#EA4335' },
-    { role: 'Tech Lead', percentage: 8, color: '#FBBC05' },
-    { role: 'Frontend Developer', percentage: 8, color: '#34A853' },
-    { role: 'Backend Developer', percentage: 64, color: '#8E24AA' }
-  ]
+  return transformApiResponse(response.data);
 };
