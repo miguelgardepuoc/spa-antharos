@@ -6,13 +6,3 @@ export interface Candidate {
     cvFilename: string | null;
     jobOfferId: string;
   }
-
-export interface HireCandidateData {
-  dni: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  salary: string;
-  departmentId: string;
-  startDate: string;
-}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import './Header.css';
 
 // Define types for navigation items
@@ -22,6 +23,7 @@ const Header: React.FC<HeaderProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   
@@ -37,17 +39,24 @@ const Header: React.FC<HeaderProps> = ({
     const checkAuthStatus = () => {
       const token = localStorage.getItem('authToken');
       setIsLoggedIn(!!token);
+  
+      if (token) {
+        try {
+          const decoded: { role: string, exp: number } = jwtDecode(token);
+          setUserRole(decoded.role || null);
+        } catch (error) {
+          console.error('Error decoding token', error);
+          setUserRole(null);
+        }
+      } else {
+        setUserRole(null);
+      }
     };
-    
-    // Initial check
+  
     checkAuthStatus();
-    
-    // Setup event listener for storage changes (in case of login/logout in another tab)
+  
     window.addEventListener('storage', checkAuthStatus);
-    
-    return () => {
-      window.removeEventListener('storage', checkAuthStatus);
-    };
+    return () => window.removeEventListener('storage', checkAuthStatus);
   }, []);
 
   // Handle scroll effect
@@ -86,6 +95,13 @@ const Header: React.FC<HeaderProps> = ({
   const isActive = useCallback((path: string): boolean => {
     return location.pathname === path;
   }, [location.pathname]);
+
+  const filteredNavigationItems = navigationItems.filter(item => {
+    if (item.path === '/people-analytics' && userRole !== 'COMPANY_MANAGEMENT') {
+      return false;
+    }
+    return true;
+  });
 
   return (
     <header className={`header ${className} ${isScrolled ? 'header--collapsed' : ''}`}>
@@ -131,7 +147,7 @@ const Header: React.FC<HeaderProps> = ({
         {isLoggedIn && (
           <nav className={`header__nav ${isMenuOpen ? 'header__nav--open' : ''}`}>
             <ul className="header__nav-list">
-              {navigationItems.map((item) => (
+              {filteredNavigationItems.map((item) => (
                 <li key={item.path} className="header__nav-item">
                   <Link 
                     to={item.path}

@@ -1,13 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/header/Header';
-import JobOfferPortal from './pages/job-offer-portal/JobOfferPortal';
+import JobOfferPortal from './pages/JobOfferPortal/JobOfferPortal';
 import ProtectedRoute from './components/ProtectedRoute';
-import JobDetail from './pages/job-offer-detail/JobOfferDetail';
+import RoleProtectedRoute from './components/RoleProtectedRoute';
+import JobDetail from './pages/JobOfferDetail';
 import Login from './pages/login/Login';
 import SignUp from './pages/signup/SignUp';
-import { AddJobOfferPage } from './pages/add-job-offer';
-import CorporateManagement from './pages/corporate-management/CorporateManagement';
+import { AddJobOfferPage } from './pages/AddJobOffer';
+import CorporateManagement from './pages/CorporateManagement/CorporateManagement';
 import {PeopleAnalytics} from './pages/people-analytics/PeopleAnalytics';
 import './App.css';
 
@@ -17,12 +18,6 @@ const PUBLIC_ROUTES = [
   { path: '/job-offer/:id', element: <JobDetail /> },
   { path: '/login', element: <Login /> },
   { path: '/signup', element: <SignUp /> }
-];
-
-const PROTECTED_ROUTES = [
-  { path: '/add-job-offer', element: <AddJobOfferPage /> },
-  { path: '/corporate-management', element: <CorporateManagement /> },
-  { path: '/people-analytics', element: <PeopleAnalytics /> }
 ];
 
 // Header logic extracted to its own component
@@ -50,9 +45,13 @@ const App: React.FC = () => {
             
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>
-              {PROTECTED_ROUTES.map(route => (
-                <Route key={route.path} path={route.path} element={route.element} />
-              ))}
+              <Route path="/add-job-offer" element={<AddJobOfferPage />} />
+              <Route path="/corporate-management" element={<CorporateManagement />} />
+              <Route path="/people-analytics" element={<PeopleAnalytics />} />
+            </Route>
+
+            <Route element={<RoleProtectedRoute allowedRoles={['COMPANY_MANAGEMENT']} />}>
+              <Route path="/people-analytics" element={<PeopleAnalytics />} />
             </Route>
             
             {/* Catch all route - redirect to job listings */}

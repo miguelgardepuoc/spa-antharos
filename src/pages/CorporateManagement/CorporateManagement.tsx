@@ -13,7 +13,6 @@ import {
 import './CorporateManagement.css';
 
 const CorporateManagement: React.FC = () => {
-  // Department state
   const [departments, setDepartments] = useState<Department[]>([]);
   const [selectedDepartment, setSelectedDepartment] = useState<Department | null>(null);
   const [newDepartmentName, setNewDepartmentName] = useState<string>('');
@@ -22,10 +21,8 @@ const CorporateManagement: React.FC = () => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
 
-  // Employee state
   const [employees, setEmployees] = useState<Employee[]>([]);
 
-  // Shared state
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,11 +31,9 @@ const CorporateManagement: React.FC = () => {
       try {
         setLoading(true);
 
-        // Fetch departments
         const departmentsData = await fetchDepartments();
         setDepartments(departmentsData);
 
-        // Fetch employees
         const employeesData = await fetchEmployees();
         setEmployees(employeesData);
       } catch (err) {
@@ -52,7 +47,6 @@ const CorporateManagement: React.FC = () => {
     fetchData();
   }, []);
 
-  // Department handlers
   const handleRenameClick = (department: Department) => {
     setSelectedDepartment(department);
     setNewDepartmentName(department.description);

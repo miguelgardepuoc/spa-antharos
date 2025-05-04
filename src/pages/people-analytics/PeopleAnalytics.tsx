@@ -42,7 +42,7 @@ export const PeopleAnalytics: React.FC = () => {
         />
         <BarChart 
           data={data.employeeEvolution}
-          title="Evolución del coste de la plantilla"
+          title="Evolución del coste anual de la plantilla"
           valueKey="cost"
           formatValue={formatCost}
         />

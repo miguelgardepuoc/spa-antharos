@@ -1,5 +1,6 @@
 import apiClient from './apiClient';
 import { Employee  } from '../types/employee';
+import { HireData } from '../types/hireCandidateForm';
 
 export const fetchEmployees = async (): Promise<Employee[]> => {
   try {
@@ -34,6 +35,15 @@ export const markEmployeeAsInactive = async (id: string): Promise<void> => {
     await apiClient.patch(`/employees/${id}/inactivation`);
   } catch (error) {
     console.error(`Error marking employee ${id} as inactive:`, error);
+    throw error;
+  }
+};
+
+export const hireCandidate = async (hireData: HireData): Promise<void> => {
+  try {
+    await apiClient.post('/employees/hiring', hireData);
+  } catch (error) {
+    console.error('Error hiring candidate:', error);
     throw error;
   }
 };

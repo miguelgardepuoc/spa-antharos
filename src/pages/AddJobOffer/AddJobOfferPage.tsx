@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { TextField } from '../../components/common/text-field';
 import { Dropdown } from '../../components/common/dropdown';
 import { Button } from '../../components/common/button';
@@ -22,77 +22,63 @@ const initialFormState: FormState = {
   requirements: ['']
 };
 
-interface EditJobOfferData extends FormState {
-  jobOfferId: string;
-  isEditMode: boolean;
+interface JobOfferRouteState extends FormState {
+  jobOfferId?: string;
 }
 
 export const AddJobOfferPage = () => {
+  const { id: jobOfferId } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const { jobTitles, loading: loadingJobs, error: jobsError } = useJobTitles();
-  const { 
-    formState, 
-    errors, 
-    touched, 
-    updateFormField, 
-    handleBlur, 
-    validateForm, 
-    handleRequirementChange, 
-    addRequirement, 
-    removeRequirement, 
+  
+  const {
+    formState,
+    errors,
+    touched,
+    updateFormField,
+    handleBlur,
+    validateForm,
+    handleRequirementChange,
+    addRequirement,
+    removeRequirement,
     touchAllFields,
-    setFormState 
+    setFormState
   } = useForm(initialFormState);
+
   const { submitState, submitJobOffer, updateJobOffer } = useJobOfferSubmit();
-  
   const { isSubmitting, submitSuccess, submitError } = submitState;
-  
-  // Estado adicional para controlar explícitamente el modo de edición
+
   const [isEditMode, setIsEditMode] = useState(false);
-  // Estado para el título del trabajo mostrado en modo edición
   const [jobTitleText, setJobTitleText] = useState('');
-  
+
+  // Load edit data from location.state or fetch in the future
   useEffect(() => {
-    // Check if there's edit data in sessionStorage
-    const editDataJson = sessionStorage.getItem('editJobOfferData');
-    const editJobId = sessionStorage.getItem('editJobId');
-    
-    // Actualizar el estado de edición explícitamente
-    setIsEditMode(editJobId !== null);
-    
-    if (editDataJson) {
-      try {
-        const editData = JSON.parse(editDataJson) as EditJobOfferData;
-        
-        // Set the form state with edit data
-        setFormState({
-          selectedJobTitle: editData.selectedJobTitle,
-          remotePercentage: editData.remotePercentage,
-          minSalary: editData.minSalary,
-          maxSalary: editData.maxSalary,
-          description: editData.description,
-          requirements: editData.requirements
-        });
-        
-        // Establecer explícitamente el texto del título del trabajo
-        if (editData.selectedJobTitle) {
-          setJobTitleText(editData.selectedJobTitle.description);
-        }
-        
-        // Store the job ID for updating
-        sessionStorage.setItem('editJobId', editData.jobOfferId);
-        
-        document.title = 'Editar oferta de trabajo';
-        
-        // Clear the edit data from sessionStorage to avoid issues on refresh
-        sessionStorage.removeItem('editJobOfferData');
-      } catch (error) {
-        console.error('Error parsing edit data:', error);
+    const editData = location.state as JobOfferRouteState | undefined;
+
+    if (jobOfferId && editData) {
+      setIsEditMode(true);
+
+      setFormState({
+        selectedJobTitle: editData.selectedJobTitle,
+        remotePercentage: editData.remotePercentage,
+        minSalary: editData.minSalary,
+        maxSalary: editData.maxSalary,
+        description: editData.description,
+        requirements: editData.requirements
+      });
+
+      if (editData.selectedJobTitle) {
+        setJobTitleText(editData.selectedJobTitle.description);
       }
+
+      sessionStorage.setItem('editJobId', jobOfferId);
+      document.title = 'Editar oferta de trabajo';
+    } else {
+      document.title = 'Publicar nueva oferta de trabajo';
     }
-  }, [setFormState]);
-  
-  // Actualizar el texto del título del trabajo cuando cambia formState.selectedJobTitle
+  }, [jobOfferId, location.state, setFormState]);
+
   useEffect(() => {
     if (formState.selectedJobTitle) {
       setJobTitleText(formState.selectedJobTitle.description);
@@ -100,14 +86,10 @@ export const AddJobOfferPage = () => {
   }, [formState.selectedJobTitle]);
 
   useEffect(() => {
-    // Redirect to job details if form submission was successful
     if (submitSuccess && !isSubmitting) {
-      // If we were in edit mode, redirect back to job details
       const editJobId = sessionStorage.getItem('editJobId');
       if (editJobId) {
-        // Clear edit data
         sessionStorage.removeItem('editJobId');
-        // Redirect after short delay to allow success message to be seen
         setTimeout(() => {
           navigate(`/job-offer/${editJobId}`);
         }, 1500);
@@ -117,17 +99,13 @@ export const AddJobOfferPage = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    
     touchAllFields();
-    
     const formErrors = validateForm();
 
-    if (Object.keys(formErrors).length > 0) {
-      return;
-    }
+    if (Object.keys(formErrors).length > 0) return;
 
     const jobOffer = {
-      id: isEditMode ? sessionStorage.getItem('editJobId')! : uuidv4(),
+      id: isEditMode ? jobOfferId! : uuidv4(),
       jobTitleId: formState.selectedJobTitle!.id,
       description: formState.description,
       minSalary: Number(formState.minSalary),
@@ -136,7 +114,6 @@ export const AddJobOfferPage = () => {
       requirement: formState.requirements.filter(req => req.trim() !== '').join(';')
     };
 
-    
     if (isEditMode) {
       await updateJobOffer(jobOffer);
     } else {
@@ -144,10 +121,8 @@ export const AddJobOfferPage = () => {
     }
   };
 
-  // Renderizar el campo de empleo según si estamos en modo edición o no
   const renderJobTitleField = () => {
     if (isEditMode) {
-      // En modo edición, mostrar un campo de texto no editable
       return (
         <div className="form-field">
           <label className="form-label" htmlFor="jobTitle">
@@ -161,45 +136,39 @@ export const AddJobOfferPage = () => {
             readOnly
             disabled
           />
-          {/* Mantener el valor seleccionado en un campo oculto para el envío del formulario */}
           {formState.selectedJobTitle && (
-            <input 
-              type="hidden" 
-              name="jobTitleId" 
-              value={formState.selectedJobTitle.id} 
-            />
+            <input type="hidden" name="jobTitleId" value={formState.selectedJobTitle.id} />
           )}
         </div>
       );
-    } else {
-      // En modo creación, mostrar el dropdown
-      return (
-        <Dropdown<JobTitle>
-          label="Empleo"
-          value={formState.selectedJobTitle?.description || ''}
-          options={jobTitles}
-          loading={loadingJobs}
-          error={jobsError}
-          onSelect={(job) => {
-            updateFormField('selectedJobTitle', job);
-            handleBlur('selectedJobTitle');
-          }}
-          placeholder="Seleccionar puesto"
-          required={true}
-          error={touched.selectedJobTitle ? errors.jobTitle : undefined}
-          renderOption={(job) => (
-            <div className="job-option">
-              <div className="job-option-content">
-                <span className={formState.selectedJobTitle?.id === job.id ? 'selected' : ''}>
-                  {job.description}
-                </span>
-              </div>
-              {formState.selectedJobTitle?.id === job.id && <span className="check-mark">✓</span>}
-            </div>
-          )}
-        />
-      );
     }
+
+    return (
+      <Dropdown<JobTitle>
+        label="Empleo"
+        value={formState.selectedJobTitle?.description || ''}
+        options={jobTitles}
+        loading={loadingJobs}
+        error={jobsError}
+        onSelect={(job) => {
+          updateFormField('selectedJobTitle', job);
+          handleBlur('selectedJobTitle');
+        }}
+        placeholder="Seleccionar puesto"
+        required={true}
+        error={touched.selectedJobTitle ? errors.jobTitle : undefined}
+        renderOption={(job) => (
+          <div className="job-option">
+            <div className="job-option-content">
+              <span className={formState.selectedJobTitle?.id === job.id ? 'selected' : ''}>
+                {job.description}
+              </span>
+            </div>
+            {formState.selectedJobTitle?.id === job.id && <span className="check-mark">✓</span>}
+          </div>
+        )}
+      />
+    );
   };
 
   return (
@@ -208,7 +177,7 @@ export const AddJobOfferPage = () => {
         <h2 className="form-title">
           {isEditMode ? 'Editar oferta de empleo' : 'Publicar nueva oferta de empleo'}
         </h2>
-        
+
         {submitSuccess === true && !isSubmitting && (
           <div className="form-success-message" role="alert">
             {isEditMode 
@@ -216,13 +185,13 @@ export const AddJobOfferPage = () => {
               : '¡Oferta de empleo creada con éxito!'}
           </div>
         )}
-        
+
         {submitSuccess === false && !isSubmitting && (
           <div className="form-error-message" role="alert">
             {submitError || 'Hubo un error al procesar la oferta. Por favor, inténtalo de nuevo.'}
           </div>
         )}
-        
+
         {renderJobTitleField()}
 
         <Dropdown<string>
@@ -295,14 +264,13 @@ export const AddJobOfferPage = () => {
           required={true}
           error={touched.requirements ? errors.requirements : undefined}
         />
-        
+
         <div className="form-actions">
           {isEditMode && (
             <Button 
               type="button" 
               variant="secondary" 
               onClick={() => {
-                // Clear edit data and redirect back to job details
                 const editJobId = sessionStorage.getItem('editJobId');
                 sessionStorage.removeItem('editJobId');
                 navigate(`/job-offer/${editJobId}`);
@@ -311,7 +279,6 @@ export const AddJobOfferPage = () => {
               Cancelar
             </Button>
           )}
-          
           <Button 
             type="submit" 
             variant="primary" 

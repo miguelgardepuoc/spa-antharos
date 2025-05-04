@@ -21,4 +21,22 @@ apiClient.interceptors.request.use(
     }
   );
 
+  apiClient.interceptors.response.use(
+    response => response,
+    error => {
+      console.log("Error on BFF response: ", error);
+      // TODO: Revisar
+      //if (
+      //error.response &&
+      //error.response.status === 401 &&
+      //error.response.data?.error === 'session_expired'
+      //) {
+        alert("Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.");
+        localStorage.removeItem('authToken');
+        window.location.href = '/login';
+      //}
+      return Promise.reject(error);
+    }
+  );
+
 export default apiClient;

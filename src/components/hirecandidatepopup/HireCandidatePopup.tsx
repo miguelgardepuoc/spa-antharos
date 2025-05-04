@@ -1,37 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import {fetchDepartments} from '../../services/departmentService.ts';
 import { Department } from '../../types/department.ts';
-import { HireCandidateData } from '../../types/candidate.ts';
+import { HireData } from '../../types/hireCandidateForm.ts';
+import { v4 as uuidv4 } from 'uuid';
 import './HireCandidatePopup.css';
 
 interface HireCandidatePopupProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: (hireData: HireCandidateData) => void;
-  candidateName: string;
+  onConfirm: (hireData: HireData) => void;
+  candidateId: string;
+  candidateName: string;  
 }
 
 const HireCandidatePopup: React.FC<HireCandidatePopupProps> = ({
   isOpen,
   onClose,
   onConfirm,
+  candidateId,
   candidateName
 }) => {
   const [departments, setDepartments] = useState<Department[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   
-  const [formData, setFormData] = useState<HireCandidateData>({
+  function splitFullName(fullName: string): { name: string; surname: string } {
+    const parts = fullName.trim().split(/\s+/);
+    const name = parts[0] || '';
+    const surname = parts.slice(1).join(' ') || '';
+    return { name, surname };
+  }
+  
+  const { name, surname } = splitFullName(candidateName);
+  
+  const [formData, setFormData] = useState<HireData>({
+    id: uuidv4(),
     dni: '',
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
+    name,
+    surname,
+    telephoneNumber: '',
     salary: '',
     departmentId: '',
-    startDate: ''
+    hiringDate: '',
+    jobTitleId: '',
+    candidateId: candidateId
   });
   
-  // Fetch departments when the component mounts
   useEffect(() => {
     const getDepartments = async () => {
       if (!isOpen) return;      
@@ -88,36 +102,36 @@ const HireCandidatePopup: React.FC<HireCandidatePopupProps> = ({
             </div>
             
             <div className="form-group">
-              <label htmlFor="firstName">Nombre</label>
+              <label htmlFor="name">Nombre</label>
               <input
                 type="text"
-                id="firstName"
-                name="firstName"
-                value={formData.firstName}
+                id="name"
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
                 required
               />
             </div>
             
             <div className="form-group">
-              <label htmlFor="lastName">Apellidos</label>
+              <label htmlFor="surname">Apellidos</label>
               <input
                 type="text"
-                id="lastName"
-                name="lastName"
-                value={formData.lastName}
+                id="surname"
+                name="surname"
+                value={formData.surname}
                 onChange={handleChange}
                 required
               />
             </div>
             
             <div className="form-group">
-              <label htmlFor="phoneNumber">Número de teléfono</label>
+              <label htmlFor="telephoneNumber">Número de teléfono</label>
               <input
                 type="text"
-                id="phoneNumber"
-                name="phoneNumber"
-                value={formData.phoneNumber}
+                id="telephoneNumber"
+                name="telephoneNumber"
+                value={formData.telephoneNumber}
                 onChange={handleChange}
                 required
               />
@@ -160,12 +174,12 @@ const HireCandidatePopup: React.FC<HireCandidatePopupProps> = ({
             </div>
             
             <div className="form-group">
-              <label htmlFor="startDate">Fecha de inicio</label>
+              <label htmlFor="hiringDate">Fecha de inicio</label>
               <input
                 type="date"
-                id="startDate"
-                name="startDate"
-                value={formData.startDate}
+                id="hiringDate"
+                name="hiringDate"
+                value={formData.hiringDate}
                 onChange={handleChange}
                 required
               />
