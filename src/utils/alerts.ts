@@ -8,6 +8,13 @@ interface ConfirmationOptions {
   cancelButtonText?: string;
 }
 
+interface AlertOptions {
+  title: string;
+  text?: string;
+  icon?: SweetAlertIcon;
+  confirmButtonText?: string;
+}
+
 export const showConfirmationAlert = async (options: ConfirmationOptions): Promise<SweetAlertResult> => {
   return await Swal.fire({
     title: options.title,
@@ -20,3 +27,12 @@ export const showConfirmationAlert = async (options: ConfirmationOptions): Promi
 };
 
 type SweetAlertIcon = 'warning' | 'error' | 'success' | 'info' | 'question';
+
+export const showAlert = async (options: AlertOptions): Promise<void> => {
+  await Swal.fire({
+    title: options.title,
+    text: options.text,
+    icon: options.icon || 'info',
+    confirmButtonText: options.confirmButtonText || 'OK'
+  });
+};

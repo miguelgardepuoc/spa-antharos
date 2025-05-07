@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { config } from '../config/environment';
+import { showAlert } from '../utils/alerts';
 
 const apiClient = axios.create({
   baseURL: config.api.baseUrl,
@@ -23,18 +24,21 @@ apiClient.interceptors.request.use(
 
   apiClient.interceptors.response.use(
     response => response,
-    error => {
-      console.log("Error on BFF response: ", error);
-      // TODO: Revisar
-      //if (
-      //error.response &&
-      //error.response.status === 401 &&
-      //error.response.data?.error === 'session_expired'
-      //) {
-        alert("Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.");
+    async error => {
+      if (
+        error.response &&
+        error.response.status === 401 &&
+        error.response.data?.error === 'session_expired'
+      ) {
+        await showAlert({
+          title: 'Sesión expirada',
+          text: 'Tu sesión ha expirado. Por favor, vuelve a iniciar sesión.',
+          icon: 'warning',
+          confirmButtonText: 'Aceptar'
+        });
         localStorage.removeItem('authToken');
         window.location.href = '/login';
-      //}
+      }
       return Promise.reject(error);
     }
   );

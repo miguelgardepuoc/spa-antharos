@@ -10,6 +10,7 @@ import {
   deleteDepartment,
   addDepartment
 } from '../../services/departmentService';
+import { jwtDecode } from 'jwt-decode';
 import './CorporateManagement.css';
 
 const CorporateManagement: React.FC = () => {
@@ -20,11 +21,35 @@ const CorporateManagement: React.FC = () => {
   const [showRenameModal, setShowRenameModal] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   const [employees, setEmployees] = useState<Employee[]>([]);
 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+      const checkAuthStatus = () => {
+        const token = localStorage.getItem('authToken');
+    
+        if (token) {
+          try {
+            const decoded: { role: string, exp: number } = jwtDecode(token);
+            setUserRole(decoded.role || null);
+          } catch (error) {
+            console.error('Error decoding token', error);
+            setUserRole(null);
+          }
+        } else {
+          setUserRole(null);
+        }
+      };
+    
+      checkAuthStatus();
+    
+      window.addEventListener('storage', checkAuthStatus);
+      return () => window.removeEventListener('storage', checkAuthStatus);
+    }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -121,24 +146,26 @@ const CorporateManagement: React.FC = () => {
       </section>
 
       {/* Departments Section */}
-      <section className="departments-section">
-        <h2>Departamentos</h2>
-        <DepartmentTable
-          departments={departments}
-          onRename={handleRenameClick}
-          onDelete={handleDeleteClick}
-        />
+      {userRole === 'ROLE_COMPANY_MANAGEMENT' && (
+        <section className="departments-section">
+          <h2>Departamentos</h2>
+          <DepartmentTable
+            departments={departments}
+            onRename={handleRenameClick}
+            onDelete={handleDeleteClick}
+          />
 
-        <div className="add-department-button-container">
-          <button
-            className="add-department-button"
-            onClick={() => setShowAddModal(true)}
-          >
-            <span className="material-icon"/>
-            Añadir departamento
-          </button>
-        </div>
-      </section>
+          <div className="add-department-button-container">
+            <button
+              className="add-department-button"
+              onClick={() => setShowAddModal(true)}
+            >
+              <span className="material-icon"/>
+              Añadir departamento
+            </button>
+          </div>
+        </section>
+      )}
 
       {/* Rename Modal */}
       {showRenameModal && selectedDepartment && (

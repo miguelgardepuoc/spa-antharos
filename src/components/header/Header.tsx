@@ -97,7 +97,7 @@ const Header: React.FC<HeaderProps> = ({
   }, [location.pathname]);
 
   const filteredNavigationItems = navigationItems.filter(item => {
-    if (item.path === '/people-analytics' && userRole !== 'COMPANY_MANAGEMENT') {
+    if (item.path === '/people-analytics' && userRole !== 'ROLE_COMPANY_MANAGEMENT') {
       return false;
     }
     return true;

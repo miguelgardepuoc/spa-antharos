@@ -5,11 +5,11 @@ import JobOfferPortal from './pages/JobOfferPortal/JobOfferPortal';
 import ProtectedRoute from './components/ProtectedRoute';
 import RoleProtectedRoute from './components/RoleProtectedRoute';
 import JobDetail from './pages/JobOfferDetail';
-import Login from './pages/login/Login';
-import SignUp from './pages/signup/SignUp';
+import Login from './pages/Login/Login';
+import SignUp from './pages/Signup/SignUp';
 import { AddJobOfferPage } from './pages/AddJobOffer';
 import CorporateManagement from './pages/CorporateManagement/CorporateManagement';
-import {PeopleAnalytics} from './pages/people-analytics/PeopleAnalytics';
+import {PeopleAnalytics} from './pages/PeopleAnalytics/PeopleAnalytics';
 import './App.css';
 
 // Routes configuration
@@ -50,7 +50,7 @@ const App: React.FC = () => {
               <Route path="/people-analytics" element={<PeopleAnalytics />} />
             </Route>
 
-            <Route element={<RoleProtectedRoute allowedRoles={['COMPANY_MANAGEMENT']} />}>
+            <Route element={<RoleProtectedRoute allowedRoles={['ROLE_COMPANY_MANAGEMENT']} />}>
               <Route path="/people-analytics" element={<PeopleAnalytics />} />
             </Route>
             
