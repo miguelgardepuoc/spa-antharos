@@ -79,10 +79,11 @@ const EmployeeTable: React.FC = () => {
 
   const columns: Column<Employee>[] = [
     { header: 'Número', key: 'employeeNumber' },
+    { header: 'Username', key: 'username' },
     { header: 'Nombre', key: 'fullName' },
     {
       header: 'Salario',
-      render: (employee) => `${employee.salary.toLocaleString('es-ES')} €`
+      render: (employee) => `${employee.salary.toLocaleString('es-ES')}€`
     },
     { header: 'DNI', key: 'dni' },
     { header: 'Puesto', key: 'jobTitle' },

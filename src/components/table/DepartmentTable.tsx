@@ -5,9 +5,10 @@ interface DepartmentTableProps {
   departments: Department[];
   onRename: (department: Department) => void;
   onDelete: (department: Department) => void;
+  onEditHead: (department: Department) => void;
 }
 
-const DepartmentTable: React.FC<DepartmentTableProps> = ({ departments, onRename, onDelete }) => {
+const DepartmentTable: React.FC<DepartmentTableProps> = ({ departments, onRename, onDelete, onEditHead }) => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
   const toggleMenu = (departmentId: string) => {
@@ -18,7 +19,6 @@ const DepartmentTable: React.FC<DepartmentTableProps> = ({ departments, onRename
     }
   };
 
-  // Cerrar el menú al hacer clic fuera
   React.useEffect(() => {
     const handleClickOutside = () => {
       setActiveMenu(null);
@@ -44,6 +44,7 @@ const DepartmentTable: React.FC<DepartmentTableProps> = ({ departments, onRename
         <thead>
           <tr>
             <th>Nombre</th>
+            <th>Jefe de Departamento</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -51,43 +52,53 @@ const DepartmentTable: React.FC<DepartmentTableProps> = ({ departments, onRename
           {departments.map((department) => (
             <tr key={department.id}>
               <td>{department.description}</td>
+              <td>{department.departmentHeadFullName || '—'}</td>
               <td>
                 <div className="dropdown-container">
                   <button 
                     className="menu-button"
                     onClick={(e) => {
-                      e.stopPropagation(); // Evitar que el clic se propague
+                      e.stopPropagation();
                       toggleMenu(department.id);
                     }}
                     title="Opciones"
                   >
-                    <span className="material-icons">more_vert</span> {/* Tres puntos verticales */}
-                    {/* Alternativa: <span className="material-icons">settings</span> para una ruedita */}
+                    <span className="material-icons">settings</span>
                   </button>
                   
                   {activeMenu === department.id && (
                     <div className="dropdown-menu">
-                      <button 
-                        className="menu-item"
-                        onClick={() => {
-                          onRename(department);
-                          setActiveMenu(null);
-                        }}
-                      >
-                        <span className="material-icons">edit</span>
-                        <span>Renombrar</span>
-                      </button>
-                      <button 
-                        className="menu-item"
-                        onClick={() => {
-                          onDelete(department);
-                          setActiveMenu(null);
-                        }}
-                      >
-                        <span className="material-icons">delete</span>
-                        <span>Eliminar</span>
-                      </button>
-                    </div>
+                    <button 
+                      className="menu-item"
+                      onClick={() => {
+                        onRename(department);
+                        setActiveMenu(null);
+                      }}
+                    >
+                      <span className="material-icons">edit</span>
+                      <span>Renombrar</span>
+                    </button>
+                    <button 
+                      className="menu-item"
+                      onClick={() => {
+                        onEditHead(department);
+                        setActiveMenu(null);
+                      }}
+                    >
+                      <span className="material-icons">person</span>
+                      <span>Editar Responsable</span>
+                    </button>
+                    <button 
+                      className="menu-item"
+                      onClick={() => {
+                        onDelete(department);
+                        setActiveMenu(null);
+                      }}
+                    >
+                      <span className="material-icons">delete</span>
+                      <span>Eliminar</span>
+                    </button>
+                  </div>
                   )}
                 </div>
               </td>

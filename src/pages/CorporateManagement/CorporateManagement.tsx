@@ -8,9 +8,11 @@ import {
   fetchDepartments,
   renameDepartment,
   deleteDepartment,
-  addDepartment
+  addDepartment,
+  updateDepartmentHead
 } from '../../services/departmentService';
 import { jwtDecode } from 'jwt-decode';
+import Swal from 'sweetalert2';
 import './CorporateManagement.css';
 
 const CorporateManagement: React.FC = () => {
@@ -18,47 +20,43 @@ const CorporateManagement: React.FC = () => {
   const [selectedDepartment, setSelectedDepartment] = useState<Department | null>(null);
   const [newDepartmentName, setNewDepartmentName] = useState<string>('');
   const [newDepartment, setNewDepartment] = useState<string>('');
+  const [newDepartmentHead, setNewDepartmentHead] = useState<string>('');
   const [showRenameModal, setShowRenameModal] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [showEditHeadModal, setShowEditHeadModal] = useState<boolean>(false);
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [userRole, setUserRole] = useState<string | null>(null);
-
   const [employees, setEmployees] = useState<Employee[]>([]);
-
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-      const checkAuthStatus = () => {
-        const token = localStorage.getItem('authToken');
-    
-        if (token) {
-          try {
-            const decoded: { role: string, exp: number } = jwtDecode(token);
-            setUserRole(decoded.role || null);
-          } catch (error) {
-            console.error('Error decoding token', error);
-            setUserRole(null);
-          }
-        } else {
+    const checkAuthStatus = () => {
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        try {
+          const decoded: { role: string; exp: number } = jwtDecode(token);
+          setUserRole(decoded.role || null);
+        } catch (error) {
+          console.error('Error decoding token', error);
           setUserRole(null);
         }
-      };
-    
-      checkAuthStatus();
-    
-      window.addEventListener('storage', checkAuthStatus);
-      return () => window.removeEventListener('storage', checkAuthStatus);
-    }, []);
+      } else {
+        setUserRole(null);
+      }
+    };
+
+    checkAuthStatus();
+    window.addEventListener('storage', checkAuthStatus);
+    return () => window.removeEventListener('storage', checkAuthStatus);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-
         const departmentsData = await fetchDepartments();
         setDepartments(departmentsData);
-
         const employeesData = await fetchEmployees();
         setEmployees(employeesData);
       } catch (err) {
@@ -81,6 +79,12 @@ const CorporateManagement: React.FC = () => {
   const handleDeleteClick = (department: Department) => {
     setSelectedDepartment(department);
     setShowDeleteModal(true);
+  };
+
+  const handleEditHeadClick = (department: Department) => {
+    setSelectedDepartment(department);
+    setNewDepartmentHead(department.departmentHeadFullName || '');
+    setShowEditHeadModal(true);
   };
 
   const handleRenameSubmit = async () => {
@@ -127,6 +131,49 @@ const CorporateManagement: React.FC = () => {
     }
   };
 
+  const handleEditHeadSubmit = async () => {
+    if (!selectedDepartment || !newDepartmentHead.trim()) return;
+
+    try {
+      await updateDepartmentHead(selectedDepartment.id, newDepartmentHead);
+      setDepartments(departments.map(dept =>
+        dept.id === selectedDepartment.id
+          ? { ...dept, departmentHeadFullName: newDepartmentHead }
+          : dept
+      ));
+      setShowEditHeadModal(false);
+      setNewDepartmentHead('');
+    } catch (error: any) {
+      console.error('Error al actualizar el responsable del departamento', error);
+      
+      let errorMessage = '';
+      if (error?.response?.status === 422) {
+        const errors = error?.response?.data?.errors;
+        const errorCode = Array.isArray(errors) && errors.length > 0 ? errors[0].code : null;
+        setShowEditHeadModal(false);
+
+        switch (errorCode) {
+          case 'USER_IS_NOT_ACTIVE':
+            errorMessage = 'El usuario no está activo. Por favor, revisa la información.';
+            break;
+          case 'USER_IS_NOT_EMPLOYEE':
+            errorMessage = 'El usuario es parte de la dirección o ya es responsable de otro departamento. Por favor, revisa la información.';
+            break;    
+          default:
+            errorMessage = 'Usuario no puede ser asignado como responsable';
+            break;
+        }
+      }      
+        
+        Swal.fire({
+          title: 'Error',
+          text: errorMessage,
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+    }
+  };
+
   if (loading) {
     return <div className="loading">Cargando datos corporativos...</div>;
   }
@@ -139,13 +186,11 @@ const CorporateManagement: React.FC = () => {
     <div className="corporate-management">
       <h1>Gestión Corporativa</h1>
 
-      {/* Employees Section */}
       <section className="employees-section">
         <h2>Plantilla</h2>
         <EmployeeTable employees={employees} />
       </section>
 
-      {/* Departments Section */}
       {userRole === 'ROLE_COMPANY_MANAGEMENT' && (
         <section className="departments-section">
           <h2>Departamentos</h2>
@@ -153,6 +198,7 @@ const CorporateManagement: React.FC = () => {
             departments={departments}
             onRename={handleRenameClick}
             onDelete={handleDeleteClick}
+            onEditHead={handleEditHeadClick}
           />
 
           <div className="add-department-button-container">
@@ -160,14 +206,12 @@ const CorporateManagement: React.FC = () => {
               className="add-department-button"
               onClick={() => setShowAddModal(true)}
             >
-              <span className="material-icon"/>
               Añadir departamento
             </button>
           </div>
         </section>
       )}
 
-      {/* Rename Modal */}
       {showRenameModal && selectedDepartment && (
         <div className="modal-backdrop">
           <div className="modal">
@@ -181,16 +225,10 @@ const CorporateManagement: React.FC = () => {
               />
             </div>
             <div className="modal-actions">
-              <button
-                className="cancel-button"
-                onClick={() => setShowRenameModal(false)}
-              >
+              <button className="cancel-button" onClick={() => setShowRenameModal(false)}>
                 Cancelar
               </button>
-              <button
-                className="confirm-button"
-                onClick={handleRenameSubmit}
-              >
+              <button className="confirm-button" onClick={handleRenameSubmit}>
                 Renombrar
               </button>
             </div>
@@ -198,7 +236,6 @@ const CorporateManagement: React.FC = () => {
         </div>
       )}
 
-      {/* Delete Modal */}
       {showDeleteModal && selectedDepartment && (
         <div className="modal-backdrop">
           <div className="modal">
@@ -207,16 +244,10 @@ const CorporateManagement: React.FC = () => {
               <p>¿Estás seguro que deseas eliminar el departamento "{selectedDepartment.description}"?</p>
             </div>
             <div className="modal-actions">
-              <button
-                className="cancel-button"
-                onClick={() => setShowDeleteModal(false)}
-              >
+              <button className="cancel-button" onClick={() => setShowDeleteModal(false)}>
                 Cancelar
               </button>
-              <button
-                className="delete-button"
-                onClick={handleDeleteSubmit}
-              >
+              <button className="delete-button" onClick={handleDeleteSubmit}>
                 Eliminar
               </button>
             </div>
@@ -224,7 +255,6 @@ const CorporateManagement: React.FC = () => {
         </div>
       )}
 
-      {/* Add Department Modal */}
       {showAddModal && (
         <div className="modal-backdrop">
           <div className="modal">
@@ -238,17 +268,34 @@ const CorporateManagement: React.FC = () => {
               />
             </div>
             <div className="modal-actions">
-              <button
-                className="cancel-button"
-                onClick={() => setShowAddModal(false)}
-              >
+              <button className="cancel-button" onClick={() => setShowAddModal(false)}>
                 Cancelar
               </button>
-              <button
-                className="confirm-button"
-                onClick={handleAddDepartment}
-              >
+              <button className="confirm-button" onClick={handleAddDepartment}>
                 Añadir
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showEditHeadModal && selectedDepartment && (
+        <div className="modal-backdrop">
+          <div className="modal">
+            <h3>Editar responsable de departamento</h3>
+            <div className="modal-content">
+              <input
+                type="text"
+                onChange={(e) => setNewDepartmentHead(e.target.value)}
+                placeholder="Username del nuevo responsable"
+              />
+            </div>
+            <div className="modal-actions">
+              <button className="cancel-button" onClick={() => setShowEditHeadModal(false)}>
+                Cancelar
+              </button>
+              <button className="confirm-button" onClick={handleEditHeadSubmit}>
+                Aceptar
               </button>
             </div>
           </div>
