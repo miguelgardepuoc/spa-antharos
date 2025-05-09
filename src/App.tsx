@@ -4,7 +4,7 @@ import Header from './components/header/Header';
 import JobOfferPortal from './pages/JobOfferPortal/JobOfferPortal';
 import ProtectedRoute from './components/ProtectedRoute';
 import RoleProtectedRoute from './components/RoleProtectedRoute';
-import JobDetail from './pages/JobOfferDetail';
+import JobDetail from './pages/JobOfferDetail/JobOfferDetail';
 import Login from './pages/Login/Login';
 import SignUp from './pages/Signup/SignUp';
 import { AddJobOfferPage } from './pages/AddJobOffer';
@@ -12,7 +12,6 @@ import CorporateManagement from './pages/CorporateManagement/CorporateManagement
 import {PeopleAnalytics} from './pages/PeopleAnalytics/PeopleAnalytics';
 import './App.css';
 
-// Routes configuration
 const PUBLIC_ROUTES = [
   { path: '/job-offers', element: <JobOfferPortal /> },
   { path: '/job-offer/:id', element: <JobDetail /> },
@@ -20,7 +19,6 @@ const PUBLIC_ROUTES = [
   { path: '/signup', element: <SignUp /> }
 ];
 
-// Header logic extracted to its own component
 const HeaderWrapper: React.FC = () => {
   const location = useLocation();
   const AUTH_PATHS = ['/login', '/signup'];
@@ -38,7 +36,6 @@ const App: React.FC = () => {
             {/* Redirect root to job offers */}
             <Route path="/" element={<Navigate to="/job-offers" replace />} />
             
-            {/* Public routes */}
             {PUBLIC_ROUTES.map(route => (
               <Route key={route.path} path={route.path} element={route.element} />
             ))}

@@ -10,7 +10,6 @@ interface JobCardProps {
 const JobCard: React.FC<JobCardProps> = ({ job }) => {
   const navigate = useNavigate();
   
-  // Format salary range from numbers to string format (e.g., "70K-80K")
   const formatSalary = (min: number, max: number): string => {
     const formatValue = (value: number): string => {
       if (value >= 1000) {

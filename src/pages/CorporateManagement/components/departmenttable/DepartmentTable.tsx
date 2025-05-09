@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Department } from '../../types/department';
+import { Department } from '../../../../types/department';
 
 interface DepartmentTableProps {
   departments: Department[];

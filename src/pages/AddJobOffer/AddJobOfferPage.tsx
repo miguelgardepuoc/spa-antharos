@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { TextField } from '../../components/common/text-field';
@@ -9,7 +9,7 @@ import { useJobTitles } from '../../hooks/useJobTitles';
 import { useForm } from '../../hooks/useForm';
 import { useJobOfferSubmit } from '../../hooks/useJobOfferSubmit';
 import { JobTitle } from '../../types/jobTitle';
-import { FormState } from '../../types/addJobOfferForm';
+import { FormState } from './types/addJobOfferForm';
 import { REMOTE_OPTIONS, REMOTE_PERCENTAGE_MAP } from '../../utils/constants';
 import './AddJobOfferPage.css';
 
@@ -52,14 +52,20 @@ export const AddJobOfferPage = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [jobTitleText, setJobTitleText] = useState('');
 
-  // Load edit data from location.state or fetch in the future
+  const hasInitializedRef = useRef(false);
+
   useEffect(() => {
-    const editData = location.state as JobOfferRouteState | undefined;
-
-    if (jobOfferId && editData) {
+    if (hasInitializedRef.current) return;
+    hasInitializedRef.current = true;
+  
+    const editJobOfferData = sessionStorage.getItem('editJobOfferData');
+    const editData = editJobOfferData
+      ? JSON.parse(editJobOfferData)
+      : (location.state as JobOfferRouteState | undefined);
+  
+    if (editData) {
       setIsEditMode(true);
-
-      setFormState({
+      setFormState({        
         selectedJobTitle: editData.selectedJobTitle,
         remotePercentage: editData.remotePercentage,
         minSalary: editData.minSalary,
@@ -67,17 +73,18 @@ export const AddJobOfferPage = () => {
         description: editData.description,
         requirements: editData.requirements
       });
-
+  
       if (editData.selectedJobTitle) {
         setJobTitleText(editData.selectedJobTitle.description);
       }
-
-      sessionStorage.setItem('editJobId', jobOfferId);
+  
+      sessionStorage.setItem('editJobId', editData.jobOfferId);
+      sessionStorage.removeItem('editJobOfferData');
       document.title = 'Editar oferta de trabajo';
     } else {
       document.title = 'Publicar nueva oferta de trabajo';
     }
-  }, [jobOfferId, location.state, setFormState]);
+  }, []);
 
   useEffect(() => {
     if (formState.selectedJobTitle) {
@@ -103,9 +110,11 @@ export const AddJobOfferPage = () => {
     const formErrors = validateForm();
 
     if (Object.keys(formErrors).length > 0) return;
-
+    const id = isEditMode 
+    ? sessionStorage.getItem('editJobId') ?? jobOfferId ?? uuidv4() 
+    : uuidv4();
     const jobOffer = {
-      id: isEditMode ? jobOfferId! : uuidv4(),
+      id,
       jobTitleId: formState.selectedJobTitle!.id,
       description: formState.description,
       minSalary: Number(formState.minSalary),
@@ -145,7 +154,7 @@ export const AddJobOfferPage = () => {
 
     return (
       <Dropdown<JobTitle>
-        label="Empleo"
+        label="Empleo (sólo aquellos para los que todavía no existe oferta)"
         value={formState.selectedJobTitle?.description || ''}
         options={jobTitles}
         loading={loadingJobs}
@@ -156,7 +165,7 @@ export const AddJobOfferPage = () => {
         }}
         placeholder="Seleccionar puesto"
         required={true}
-        error={touched.selectedJobTitle ? errors.jobTitle : undefined}
+        errorMessage={touched.selectedJobTitle ? errors.jobTitle : undefined}
         renderOption={(job) => (
           <div className="job-option">
             <div className="job-option-content">
@@ -205,7 +214,7 @@ export const AddJobOfferPage = () => {
           }}
           placeholder="Seleccionar modalidad"
           required={true}
-          error={touched.remotePercentage ? errors.remotePercentage : undefined}
+          errorMessage={touched.remotePercentage ? errors.remotePercentage : undefined}
           renderOption={(option) => (
             <div className="remote-option">
               <span className={formState.remotePercentage === option ? 'selected' : ''}>

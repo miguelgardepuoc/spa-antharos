@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Employee, EmployeeStatus } from '../../types/employee';
-import { fetchEmployees, markEmployeeAsInactive, putEmployeeOnLeave, terminateEmployee } from '../../services/employeeService';
-import Table, { Column } from '../common/table/Table';
-import { showConfirmationAlert } from '../../utils/alerts';
+import { Employee, EmployeeStatus } from '../../../../types/employee';
+import { fetchEmployees, markEmployeeAsInactive, putEmployeeOnLeave, terminateEmployee } from '../../../../services/employeeService';
+import Table, { Column } from '../../../../components/common/table/Table';
+import { showConfirmationAlert } from '../../../../utils/alerts';
 import './EmployeeTable.css';
 
 const EmployeeTable: React.FC = () => {

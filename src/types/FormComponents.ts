@@ -25,7 +25,7 @@ export interface DropdownProps<T> {
   onSelect: (option: T) => void;
   placeholder?: string;
   required?: boolean;
-  error?: string;
+  errorMessage?: string;
 }
 
 export interface ButtonProps {
