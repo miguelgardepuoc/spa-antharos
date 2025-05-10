@@ -1,4 +1,4 @@
-import { TextFieldProps } from '../../../types/formComponents';
+import { TextFieldProps } from '../../types/formComponents';
 import './TextField.css';
 
 export const TextField = ({ 
@@ -60,3 +60,5 @@ export const TextField = ({
     </div>
   );
 };
+
+export default TextField;

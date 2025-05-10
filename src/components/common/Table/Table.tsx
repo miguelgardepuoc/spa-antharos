@@ -1,40 +1,33 @@
 import React, { ReactNode } from 'react';
 import './Table.css';
 
-export interface Column<T> {
-  header: string;
-  key?: keyof T;
-  render?: (item: T, index: number) => ReactNode;
-  width?: string;
-}
-
-interface TableProps<T> {
-  columns: Column<T>[];
-  data: T[];
-  keyExtractor: (item: T) => string | number;
+interface TableProps {
+  headers: string[];
+  data: any[];
+  renderRow: (item: any, index: number) => React.ReactElement;
   isLoading?: boolean;
   error?: string | null;
-  loadingText?: string;
+  emptyMessage?: ReactNode;
+  loadingMessage?: string;
   className?: string;
-  onRowClick?: (item: T) => void;
-  onRowHover?: (item: T | null) => void;
-  emptyMessage?: string;
+  headerClassName?: string;
+  bodyClassName?: string;
 }
 
-const Table = <T extends object>({
-  columns,
+const Table: React.FC<TableProps> = ({
+  headers,
   data,
-  keyExtractor,
+  renderRow,
   isLoading = false,
   error = null,
-  loadingText = "Cargando datos...",
-  className = "",
-  onRowClick,
-  onRowHover,
-  emptyMessage = "No hay datos disponibles"
-}: TableProps<T>) => {
+  emptyMessage = 'No hay datos disponibles',
+  loadingMessage = 'Cargando datos...',
+  className = '',
+  headerClassName = '',
+  bodyClassName = '',
+}) => {
   if (isLoading) {
-    return <div className="table-loading">{loadingText}</div>;
+    return <div className="table-loading">{loadingMessage}</div>;
   }
 
   if (error) {
@@ -46,40 +39,17 @@ const Table = <T extends object>({
   }
 
   return (
-    <div className="table-container">
-      <table className={`data-table ${className}`}>
-        <thead>
+    <div className={`table-container ${className}`}>
+      <table className="data-table">
+        <thead className={headerClassName}>
           <tr>
-            {columns.map((column, index) => (
-              <th 
-                key={index} 
-                style={{ width: column.width }}
-              >
-                {column.header}
-              </th>
+            {headers.map((header, index) => (
+              <th key={index}>{header}</th>
             ))}
           </tr>
         </thead>
-        <tbody>
-          {data.map((item, rowIndex) => (
-            <tr 
-              key={keyExtractor(item)}
-              onClick={onRowClick ? () => onRowClick(item) : undefined}
-              onMouseEnter={onRowHover ? () => onRowHover(item) : undefined}
-              onMouseLeave={onRowHover ? () => onRowHover(null) : undefined}
-              className={onRowClick ? 'clickable-row' : ''}
-            >
-              {columns.map((column, colIndex) => (
-                <td key={colIndex}>
-                  {column.render
-                    ? column.render(item, rowIndex)
-                    : column.key
-                    ? String(item[column.key] || '')
-                    : ''}
-                </td>
-              ))}
-            </tr>
-          ))}
+        <tbody className={bodyClassName}>
+          {data.map((item, index) => renderRow(item, index))}
         </tbody>
       </table>
     </div>

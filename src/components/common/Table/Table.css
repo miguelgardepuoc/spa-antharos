@@ -7,6 +7,19 @@
   width: 100%;
 }
 
+.table-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: var(--medium-gray);
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
 .data-table {
   width: 100%;
   border-collapse: collapse;
@@ -36,7 +49,6 @@
   border-bottom: none;
 }
 
-/* Estilos para los selectores de estado */
 .status-select {
   padding: 0.35rem;
   border-radius: var(--radius-sm);
@@ -50,7 +62,6 @@
   cursor: not-allowed;
 }
 
-/* Estados para los diferentes tipos de registros */
 /* Empleados */
 .status-active {
   background-color: #dcfce7;
@@ -107,7 +118,7 @@
   padding: 2rem;
   text-align: center;
   color: var(--text-light);
-  background-color: #f8fafc;
+  background-color: #ffffff;
   border-radius: var(--radius-md);
 }
 
@@ -165,7 +176,7 @@
   font-size: 1rem;
 }
 
-
+/* Estilos para descarga de CV */
 .download-cv {
   display: inline-block;
   color: var(--primary);

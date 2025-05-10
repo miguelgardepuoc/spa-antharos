@@ -347,106 +347,8 @@ body {
 .loading-candidates,
 .no-candidates {
   text-align: center;
-  padding: 2rem;
   color: var(--text-light);
   font-style: italic;
-}
-
-.candidates-table-container {
-  max-height: 350px;
-  overflow-y: auto;
-  border: 1px solid var(--medium-gray);
-  border-radius: var(--radius-md);
-  margin-top: 1rem;
-}
-
-.candidates-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.candidates-table th,
-.candidates-table td {
-  padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid var(--light-gray);
-}
-
-.candidates-table th {
-  position: sticky;
-  top: 0;
-  background-color: #f8fafc;
-  font-weight: 600;
-  color: var(--text-light);
-  z-index: 1;
-}
-
-.candidates-table tr:hover {
-  background-color: #f8fafc;
-}
-
-.candidates-table tr:last-child td {
-  border-bottom: none;
-}
-
-/* Status selector styling */
-.status-select {
-  padding: 0.5rem;
-  border: 1px solid var(--medium-gray);
-  border-radius: var(--radius-sm);
-  font-size: 0.875rem;
-  width: 100%;
-  max-width: 150px;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.5rem center;
-  background-size: 1rem;
-  cursor: pointer;
-}
-
-.status-applied {
-  color: #1e40af;
-  border-color: #93c5fd;
-  background-color: #dbeafe;
-}
-
-.status-interviewing {
-  color: #b45309;
-  border-color: #fcd34d;
-  background-color: #fef3c7;
-}
-
-.status-hired {
-  color: #065f46;
-  border-color: #6ee7b7;
-  background-color: #d1fae5;
-}
-
-.status-rejected {
-  color: #b91c1c;
-  border-color: #fca5a5;
-  background-color: #fee2e2;
-}
-
-/* Download CV link */
-.download-cv {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  color: var(--primary-color);
-  transition: background-color 0.2s ease;
-}
-
-.download-cv:hover {
-  background-color: #dbeafe;
-}
-
-.download-icon {
-  font-size: 1.25rem;
 }
 
 /* Responsive adjustments */
@@ -464,11 +366,6 @@ body {
   .job-title-section h1 {
     font-size: 1.75rem;
   }
-  
-  .candidates-table th:nth-child(3),
-  .candidates-table td:nth-child(3) {
-    display: none;
-  }
 }
 
 @media (max-width: 480px) {
@@ -479,10 +376,5 @@ body {
   
   .admin-actions {
     flex-direction: column;
-  }
-  
-  .candidates-table th:nth-child(4),
-  .candidates-table td:nth-child(4) {
-    display: none;
   }
 }

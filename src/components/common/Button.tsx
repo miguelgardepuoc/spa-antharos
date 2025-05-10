@@ -1,4 +1,4 @@
-import { ButtonProps } from '../../../types/formComponents';
+import { ButtonProps } from '../../types/formComponents';
 import './Button.css';
 
 export const Button = ({ 
@@ -24,3 +24,5 @@ export const Button = ({
     </button>
   );
 };
+
+export default Button;

@@ -1,10 +1,10 @@
 import { FormEvent, useEffect, useState, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { TextField } from '../../components/common/text-field';
-import { Dropdown } from '../../components/common/dropdown';
-import { Button } from '../../components/common/button';
-import { RequirementsList } from '../../components/forms/requirements';
+import { TextField } from '../../components/common/TextField';
+import { Dropdown } from '../../components/common/Dropdown';
+import { Button } from '../../components/common/Button';
+import { RequirementsList } from './components/RequirementsList';
 import { useJobTitles } from '../../hooks/useJobTitles';
 import { useForm } from '../../hooks/useForm';
 import { useJobOfferSubmit } from './hooks/useJobOfferSubmit';
