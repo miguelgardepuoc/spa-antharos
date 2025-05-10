@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Department } from '../../types/department';
-import { Employee } from '../../types/employee';
 import DepartmentTable from './components/DepartmentTable';
 import EmployeeTable from './components/EmployeeTable';
-import { fetchEmployees } from '../../services/employeeService';
 import {
   fetchDepartments,
   renameDepartment,
@@ -26,7 +24,6 @@ const CorporateManagement: React.FC = () => {
   const [showEditHeadModal, setShowEditHeadModal] = useState<boolean>(false);
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [userRole, setUserRole] = useState<string | null>(null);
-  const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -57,8 +54,6 @@ const CorporateManagement: React.FC = () => {
         setLoading(true);
         const departmentsData = await fetchDepartments();
         setDepartments(departmentsData);
-        const employeesData = await fetchEmployees();
-        setEmployees(employeesData);
       } catch (err) {
         setError('Error al cargar los datos corporativos');
         console.error(err);

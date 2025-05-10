@@ -1,54 +1,90 @@
-# React + TypeScript + Vite
+# Antharos Human Resources Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+Antharos is a comprehensive human resources platform built with React, TypeScript, and Vite. The platform serves two main purposes:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. **External portal** for job seekers to browse positions and submit applications
+2. **Internal portal** for employees with role-based access (Employee, Department Head, Company Management)
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### External Portal
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- Browse job offers
+- Apply to positions with resume/CV upload
+
+### Internal Portal
+
+**Employee Access**
+- Browse job offers
+
+**Department Head Access**
+- Manage job offers of department (posting, editing and removing)
+- Manage candidates
+- Manage employees of department
+
+**Company Management Access**
+- Manage job offers (posting, editing and removing)
+- Manage employees
+- Manage departments
+- Access comprehensive people analytics with company statistics
+
+## Technology Stack
+
+- **Frontend**: React with TypeScript
+- **Build Tool**: Vite
+- **State Management**: React Hooks (useState, useEffect) and Context API
+- **Styling**: CSS
+- **Authentication**: JWT
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v16+)
+- npm or yarn
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/miguelgardepuoc/spa-antharos
+cd antharos
+
+# Install dependencies
+npm install
+# or
+yarn install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+# Start the development server
+npm run dev
+# or
+yarn dev
 ```
+
+The application will be available at `http://localhost:5173`.
+
+### Building for Production
+
+```bash
+# Build the application
+npm run build
+# or
+yarn build
+```
+
+## Role-Based Access Control
+
+Antharos implements role-based access control with the following roles:
+
+- `CANDIDATE`: External job applicants
+- `EMPLOYEE`: Basic staff members
+- `DEPARTMENT_HEAD`: Managers of specific departments
+- `COMPANY_MANAGEMENT`: Executive-level management
+
+Each role has progressively more access to system features.
