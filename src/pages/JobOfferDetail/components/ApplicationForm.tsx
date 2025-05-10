@@ -26,25 +26,21 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
   submitting,
   status,
   handleFileChange,
-  handleSubmit
+  handleSubmit,
 }) => {
   return (
     <div className="contact-section">
       <h2>Inscribirse</h2>
-      
-      {status.type && (
-        <div className={`status-message ${status.type}`}>
-          {status.message}
-        </div>
-      )}
-      
+
+      {status.type && <div className={`status-message ${status.type}`}>{status.message}</div>}
+
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="email">Email</label>
-          <input 
-            type="email" 
-            id="email" 
-            placeholder="tu.email@ejemplo.com" 
+          <input
+            type="email"
+            id="email"
+            placeholder="tu.email@ejemplo.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -52,30 +48,23 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
           />
           {emailError && <div className="input-error">{emailError}</div>}
         </div>
-        
+
         <div className="form-group">
           <label>Adjunta tu CV</label>
           <div className="file-upload">
-            <label htmlFor="file-upload" className={`file-upload-label ${fileError ? 'error-input' : ''}`}>
+            <label
+              htmlFor="file-upload"
+              className={`file-upload-label ${fileError ? 'error-input' : ''}`}
+            >
               {file ? file.name : 'Select PDF file'}
               <span className="upload-icon">📎</span>
             </label>
-            <input 
-              type="file" 
-              id="file-upload" 
-              onChange={handleFileChange}
-              accept=".pdf"
-              hidden
-            />
+            <input type="file" id="file-upload" onChange={handleFileChange} accept=".pdf" hidden />
           </div>
           {fileError && <div className="input-error">{fileError}</div>}
         </div>
-        
-        <button 
-          type="submit" 
-          className="submit-button" 
-          disabled={submitting}
-        >
+
+        <button type="submit" className="submit-button" disabled={submitting}>
           {submitting ? 'Inscribiéndose...' : 'Inscribirme'}
         </button>
       </form>

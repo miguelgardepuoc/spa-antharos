@@ -14,7 +14,7 @@ export const useJobOffer = (jobOfferId: string, navigate: NavigateFunction) => {
   useEffect(() => {
     const getJobDetail = async () => {
       if (!jobOfferId) return;
-      
+
       try {
         setLoading(true);
         const jobData = await fetchJobOfferDetail(jobOfferId);
@@ -35,26 +35,26 @@ export const useJobOffer = (jobOfferId: string, navigate: NavigateFunction) => {
     const optionEntry = Object.entries(REMOTE_PERCENTAGE_MAP).find(
       ([_, value]) => value === remotePercentage
     );
-    
+
     return optionEntry ? optionEntry[0] : '';
   };
 
   const handleEditJobOffer = () => {
     if (!job) return;
-    
+
     const formData = {
       jobOfferId: job.id,
       selectedJobTitle: {
-        description: job.jobTitle
+        description: job.jobTitle,
       },
       remotePercentage: getRemotePercentageOption(job.remote),
       minSalary: job.minSalary.toString(),
       maxSalary: job.maxSalary.toString(),
       description: job.description,
-      requirements: job.requirement ? job.requirement.split(';').map(req => req.trim()) : [''],
-      isEditMode: true
+      requirements: job.requirement ? job.requirement.split(';').map((req) => req.trim()) : [''],
+      isEditMode: true,
     };
-    
+
     sessionStorage.setItem('editJobOfferData', JSON.stringify(formData));
     navigate('/add-job-offer');
   };
@@ -68,30 +68,33 @@ export const useJobOffer = (jobOfferId: string, navigate: NavigateFunction) => {
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
       confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
     }).then(async (result) => {
       if (result.isConfirmed && job) {
         try {
           setIsDeleting(true);
-          
+
           await deleteJobOffer(job.id);
-          
+
           Swal.fire({
             title: 'Eliminada',
             text: 'La oferta de trabajo ha sido eliminada correctamente.',
             icon: 'success',
-            confirmButtonText: 'Aceptar'
+            confirmButtonText: 'Aceptar',
           }).then(() => {
             navigate('/');
           });
         } catch (error) {
           console.error('Error deleting job offer:', error);
-          
+
           Swal.fire({
             title: 'Error',
-            text: error instanceof Error ? error.message : 'Ha ocurrido un error al eliminar la oferta de trabajo.',
+            text:
+              error instanceof Error
+                ? error.message
+                : 'Ha ocurrido un error al eliminar la oferta de trabajo.',
             icon: 'error',
-            confirmButtonText: 'Aceptar'
+            confirmButtonText: 'Aceptar',
           });
         } finally {
           setIsDeleting(false);
@@ -106,6 +109,6 @@ export const useJobOffer = (jobOfferId: string, navigate: NavigateFunction) => {
     error,
     isDeleting,
     handleEditJobOffer,
-    handleRemoveJobOffer
+    handleRemoveJobOffer,
   };
 };

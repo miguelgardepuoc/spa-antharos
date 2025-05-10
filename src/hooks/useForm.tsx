@@ -34,19 +34,19 @@ export const useForm = (initialState: FormState): UseFormResult => {
   }, [formState, touched, validateForm]);
 
   const updateFormField = (field: keyof FormState, value: any) => {
-    setFormState(prev => ({ ...prev, [field]: value }));
+    setFormState((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleBlur = (field: keyof FormState) => {
-    setTouched(prev => ({ ...prev, [field]: true }));
+    setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
   const handleRequirementChange = (index: number, value: string) => {
     const newRequirements = [...formState.requirements];
     newRequirements[index] = value;
     updateFormField('requirements', newRequirements);
-    
-    setTouched(prev => ({ ...prev, requirements: true }));
+
+    setTouched((prev) => ({ ...prev, requirements: true }));
   };
 
   const addRequirement = () => {
@@ -55,7 +55,7 @@ export const useForm = (initialState: FormState): UseFormResult => {
 
   const removeRequirement = (index: number) => {
     if (formState.requirements.length <= 1) return;
-    
+
     const newRequirements = [...formState.requirements];
     newRequirements.splice(index, 1);
     updateFormField('requirements', newRequirements);
@@ -91,6 +91,6 @@ export const useForm = (initialState: FormState): UseFormResult => {
     removeRequirement,
     touchAllFields,
     resetForm,
-    setFormState: setFullFormState // Added this to the returned object
+    setFormState: setFullFormState, // Added this to the returned object
   };
 };

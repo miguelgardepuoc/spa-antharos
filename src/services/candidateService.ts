@@ -4,13 +4,13 @@ import { Candidate } from '../types/candidate';
 export const fetchCandidatesByJobOffer = async (jobOfferId: string): Promise<Candidate[]> => {
   try {
     const response = await apiClient.get(`/candidates`, {
-      params: { jobOfferId }
+      params: { jobOfferId },
     });
-    
+
     if (!response.data) {
       return [];
     }
-    
+
     return response.data;
   } catch (error) {
     console.error('Error fetching candidates:', error);
@@ -21,16 +21,16 @@ export const fetchCandidatesByJobOffer = async (jobOfferId: string): Promise<Can
 export const downloadCv = async (cvFilename: string): Promise<void> => {
   try {
     const response = await apiClient.get(`/candidates/sas-url`, {
-      params: { filename: cvFilename }
+      params: { filename: cvFilename },
     });
-    
+
     if (response.data?.url) {
-      window.open(response.data.url, "_blank", "noopener,noreferrer");
+      window.open(response.data.url, '_blank', 'noopener,noreferrer');
     } else {
-      console.error("No URL returned from SAS endpoint");
+      console.error('No URL returned from SAS endpoint');
     }
   } catch (error) {
-    console.error("Error fetching SAS URL:", error);
+    console.error('Error fetching SAS URL:', error);
   }
 };
 
@@ -55,16 +55,16 @@ export const interviewCandidate = async (candidateId: string): Promise<void> => 
 export const addCandidate = async (candidate: any): Promise<void> => {
   try {
     const formData = new FormData();
-    
+
     formData.append('id', candidate.id);
     formData.append('personalEmail', candidate.personalEmail);
     formData.append('jobOfferId', candidate.jobOfferId);
     formData.append('cv', candidate.cv);
-    
+
     await apiClient.post('/candidates', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        'Content-Type': 'multipart/form-data',
+      },
     });
   } catch (error) {
     console.error('Error creating candidate:', error);

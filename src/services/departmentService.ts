@@ -43,7 +43,9 @@ export const addDepartment = async (description: string): Promise<Department> =>
 
 export const updateDepartmentHead = async (id: string, username: string): Promise<Department> => {
   try {
-    const response = await apiClient.put(`/departments/${id}/head`, { username });
+    const response = await apiClient.put(`/departments/${id}/head`, {
+      username,
+    });
     return response.data;
   } catch (error) {
     console.error('Error in updateDepartmentHead:', error);

@@ -1,65 +1,65 @@
-  .analytics-dashboard {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1.5rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
+.analytics-dashboard {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-  .dashboard-title {
-    font-size: 2.25rem;
-    font-weight: 700;
-    margin-top: 0;
-    margin-bottom: 2rem;
-    color: var(--text-dark);
-    position: relative;
-    padding-bottom: 0.75rem;
-  }
+.dashboard-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 2rem;
+  color: var(--text-dark);
+  position: relative;
+  padding-bottom: 0.75rem;
+}
 
-  .dashboard-title::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 3px;
-    width: 4rem;
-    background-color: var(--primary-color);
-  }
-  
+.dashboard-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 4rem;
+  background-color: var(--primary-color);
+}
+
+.analytics-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+.analytics-row.single > div {
+  max-width: 600px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  font-size: 18px;
+  color: #666;
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  font-size: 18px;
+  color: #d32f2f;
+}
+
+@media (max-width: 768px) {
   .analytics-row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-    gap: 20px;
+    flex-direction: column;
   }
-  
-  .analytics-row.single > div {
-    max-width: 600px;
+
+  .chart-container {
+    width: 100%;
   }
-  
-  .loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 300px;
-    font-size: 18px;
-    color: #666;
-  }
-  
-  .error {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 300px;
-    font-size: 18px;
-    color: #d32f2f;
-  }
-  
-  @media (max-width: 768px) {
-    .analytics-row {
-      flex-direction: column;
-    }
-    
-    .chart-container {
-      width: 100%;
-    }
-  }
+}

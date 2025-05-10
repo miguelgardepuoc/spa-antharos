@@ -46,7 +46,8 @@
   gap: 24px;
 }
 
-.loading, .error {
+.loading,
+.error {
   text-align: center;
   padding: 40px;
   font-size: 18px;
@@ -66,7 +67,7 @@
   .job-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .header-section h1 {
     font-size: 32px;
   }

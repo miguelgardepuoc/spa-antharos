@@ -9,7 +9,7 @@ interface JobCardProps {
 
 const JobCard: React.FC<JobCardProps> = ({ job }) => {
   const navigate = useNavigate();
-  
+
   const formatSalary = (min: number, max: number): string => {
     const formatValue = (value: number): string => {
       if (value >= 1000) {
@@ -17,7 +17,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
       }
       return value.toString();
     };
-    
+
     return `${formatValue(min)}-${formatValue(max)}`;
   };
 

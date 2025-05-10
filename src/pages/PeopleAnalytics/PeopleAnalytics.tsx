@@ -35,12 +35,12 @@ export const PeopleAnalytics: React.FC = () => {
       <h1 className="dashboard-title">People Analytics</h1>
 
       <div className="analytics-row">
-        <BarChart 
+        <BarChart
           data={data.employeeEvolution}
           title="Evolución de la plantilla"
           valueKey="count"
         />
-        <BarChart 
+        <BarChart
           data={data.employeeEvolution}
           title="Evolución del coste anual de la plantilla"
           valueKey="cost"
@@ -49,18 +49,15 @@ export const PeopleAnalytics: React.FC = () => {
       </div>
 
       <div className="analytics-row">
-        <PieChart 
-          data={data.departmentDistribution}
-          title="Distribución por departamento"
-        />
-        <PieChart 
+        <PieChart data={data.departmentDistribution} title="Distribución por departamento" />
+        <PieChart
           data={data.departmentCostDistribution}
           title="Distribución del coste por departamento"
         />
       </div>
 
       <div className="analytics-row single">
-        <PieChart 
+        <PieChart
           data={data.techRolesDistribution}
           title="Distribución en el departamento de Tecnología"
         />

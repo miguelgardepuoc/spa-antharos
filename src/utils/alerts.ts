@@ -15,7 +15,9 @@ interface AlertOptions {
   confirmButtonText?: string;
 }
 
-export const showConfirmationAlert = async (options: ConfirmationOptions): Promise<SweetAlertResult> => {
+export const showConfirmationAlert = async (
+  options: ConfirmationOptions
+): Promise<SweetAlertResult> => {
   return await Swal.fire({
     title: options.title,
     text: options.text,
@@ -33,6 +35,6 @@ export const showAlert = async (options: AlertOptions): Promise<void> => {
     title: options.title,
     text: options.text,
     icon: options.icon || 'info',
-    confirmButtonText: options.confirmButtonText || 'OK'
+    confirmButtonText: options.confirmButtonText || 'OK',
   });
 };

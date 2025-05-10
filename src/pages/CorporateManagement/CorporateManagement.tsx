@@ -9,7 +9,7 @@ import {
   renameDepartment,
   deleteDepartment,
   addDepartment,
-  updateDepartmentHead
+  updateDepartmentHead,
 } from '../../services/departmentService';
 import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
@@ -92,11 +92,11 @@ const CorporateManagement: React.FC = () => {
 
     try {
       await renameDepartment(selectedDepartment.id, newDepartmentName);
-      setDepartments(departments.map(dept =>
-        dept.id === selectedDepartment.id
-          ? { ...dept, description: newDepartmentName }
-          : dept
-      ));
+      setDepartments(
+        departments.map((dept) =>
+          dept.id === selectedDepartment.id ? { ...dept, description: newDepartmentName } : dept
+        )
+      );
       setShowRenameModal(false);
     } catch (err) {
       setError('Error al renombrar el departamento');
@@ -109,7 +109,7 @@ const CorporateManagement: React.FC = () => {
 
     try {
       await deleteDepartment(selectedDepartment.id);
-      setDepartments(departments.filter(dept => dept.id !== selectedDepartment.id));
+      setDepartments(departments.filter((dept) => dept.id !== selectedDepartment.id));
       setShowDeleteModal(false);
     } catch (err) {
       setError('Error al eliminar el departamento');
@@ -136,16 +136,18 @@ const CorporateManagement: React.FC = () => {
 
     try {
       await updateDepartmentHead(selectedDepartment.id, newDepartmentHead);
-      setDepartments(departments.map(dept =>
-        dept.id === selectedDepartment.id
-          ? { ...dept, departmentHeadFullName: newDepartmentHead }
-          : dept
-      ));
+      setDepartments(
+        departments.map((dept) =>
+          dept.id === selectedDepartment.id
+            ? { ...dept, departmentHeadFullName: newDepartmentHead }
+            : dept
+        )
+      );
       setShowEditHeadModal(false);
       setNewDepartmentHead('');
     } catch (error: any) {
       console.error('Error al actualizar el responsable del departamento', error);
-      
+
       let errorMessage = '';
       if (error?.response?.status === 422) {
         const errors = error?.response?.data?.errors;
@@ -157,20 +159,21 @@ const CorporateManagement: React.FC = () => {
             errorMessage = 'El usuario no está activo. Por favor, revisa la información.';
             break;
           case 'USER_IS_NOT_EMPLOYEE':
-            errorMessage = 'El usuario es parte de la dirección o ya es responsable de otro departamento. Por favor, revisa la información.';
-            break;    
+            errorMessage =
+              'El usuario es parte de la dirección o ya es responsable de otro departamento. Por favor, revisa la información.';
+            break;
           default:
             errorMessage = 'Usuario no puede ser asignado como responsable';
             break;
         }
-      }      
-        
-        Swal.fire({
-          title: 'Error',
-          text: errorMessage,
-          icon: 'error',
-          confirmButtonText: 'Aceptar'
-        });
+      }
+
+      Swal.fire({
+        title: 'Error',
+        text: errorMessage,
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+      });
     }
   };
 
@@ -202,10 +205,7 @@ const CorporateManagement: React.FC = () => {
           />
 
           <div className="add-department-button-container">
-            <button
-              className="add-department-button"
-              onClick={() => setShowAddModal(true)}
-            >
+            <button className="add-department-button" onClick={() => setShowAddModal(true)}>
               Añadir departamento
             </button>
           </div>
@@ -241,7 +241,10 @@ const CorporateManagement: React.FC = () => {
           <div className="modal">
             <h3>Eliminar departamento</h3>
             <div className="modal-content">
-              <p>¿Estás seguro que deseas eliminar el departamento "{selectedDepartment.description}"?</p>
+              <p>
+                ¿Estás seguro que deseas eliminar el departamento "{selectedDepartment.description}
+                "?
+              </p>
             </div>
             <div className="modal-actions">
               <button className="cancel-button" onClick={() => setShowDeleteModal(false)}>

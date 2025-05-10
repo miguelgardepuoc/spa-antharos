@@ -1,5 +1,5 @@
 import apiClient from './apiClient';
-import { Employee  } from '../types/employee';
+import { Employee } from '../types/employee';
 import { HireData } from '../types/hireCandidateForm';
 
 export const fetchEmployees = async (): Promise<Employee[]> => {

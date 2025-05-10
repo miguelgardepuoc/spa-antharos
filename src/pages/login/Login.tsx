@@ -14,10 +14,10 @@ export default function BookshelfLoginPage() {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-    
+
     try {
       const result = await login(username, password);
-      
+
       if ('message' in result) {
         setError(result.message);
       } else {
@@ -43,7 +43,7 @@ export default function BookshelfLoginPage() {
               {error}
             </div>
           )}
-          
+
           <form onSubmit={handleSubmit}>
             <div className="input-group">
               <label className="input-label" htmlFor="username">
@@ -59,7 +59,7 @@ export default function BookshelfLoginPage() {
                 required
               />
             </div>
-            
+
             <div className="input-group">
               <label className="input-label" htmlFor="password">
                 Contraseña
@@ -74,17 +74,16 @@ export default function BookshelfLoginPage() {
                 required
               />
             </div>
-            
-            <button
-              type="submit"
-              className="submit-button"
-              disabled={isLoading}
-            >
+
+            <button type="submit" className="submit-button" disabled={isLoading}>
               {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
             </button>
             <p className="text-center mt-6 text-sm text-gray-600">
-  No te has registrado? <a href="/signup" className="text-blue-600 hover:underline">Registrarse</a>
-</p>
+              No te has registrado?{' '}
+              <a href="/signup" className="text-blue-600 hover:underline">
+                Registrarse
+              </a>
+            </p>
           </form>
         </div>
       </div>

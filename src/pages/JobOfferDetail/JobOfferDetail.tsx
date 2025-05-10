@@ -18,16 +18,16 @@ const JobDetail: React.FC = () => {
   const navigate = useNavigate();
   const isLoggedIn = Boolean(localStorage.getItem('authToken'));
   const isEmployee = localStorage.getItem('userRole') == 'ROLE_EMPLOYEE';
-  
-  const { 
-    job, 
-    loading: loadingJob, 
+
+  const {
+    job,
+    loading: loadingJob,
     error: jobError,
     handleEditJobOffer,
     handleRemoveJobOffer,
-    isDeleting
+    isDeleting,
   } = useJobOffer(id, navigate);
-  
+
   const {
     candidates,
     loading: loadingCandidates,
@@ -38,9 +38,9 @@ const JobDetail: React.FC = () => {
     selectedCandidate,
     showHirePopup,
     setShowHirePopup,
-    setSelectedCandidate
+    setSelectedCandidate,
   } = useCandidates(id);
-  
+
   const {
     email,
     setEmail,
@@ -50,7 +50,7 @@ const JobDetail: React.FC = () => {
     submitting,
     status,
     handleFileChange,
-    handleSubmit
+    handleSubmit,
   } = useJobApplication(id);
 
   if (loadingJob) {
@@ -85,7 +85,7 @@ const JobDetail: React.FC = () => {
 
         <div className="job-image">
           <img src={job.photoUrl} alt={job.jobTitle} />
-          
+
           {isLoggedIn && !isEmployee && (
             <JobActions
               onEdit={handleEditJobOffer}
@@ -105,7 +105,7 @@ const JobDetail: React.FC = () => {
           updatingCandidateId={updatingCandidateId}
         />
       )}
-      
+
       {showHirePopup && selectedCandidate && (
         <HireCandidatePopup
           isOpen={showHirePopup}

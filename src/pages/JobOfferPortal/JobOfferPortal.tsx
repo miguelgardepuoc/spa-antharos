@@ -15,7 +15,7 @@ const JobOfferPortal: React.FC = () => {
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     setIsLoggedIn(!!token);
-    
+
     const getJobs = async () => {
       try {
         setLoading(true);
@@ -49,16 +49,16 @@ const JobOfferPortal: React.FC = () => {
     <div className="job-listings-container">
       <div className="header-section">
         <div className="header-top">
-          <h1>Ofertas de empleo</h1>          
+          <h1>Ofertas de empleo</h1>
         </div>
         <p className="subtitle">
-          Descubre nuevas oportunidades y construye el futuro que siempre has soñado. 
-          Únete a una comunidad donde el talento y la pasión se encuentran para crear 
-          algo increíble. Encuentra el trabajo perfecto para ti y da el siguiente paso 
-          en tu carrera con nosotros. ¡Tu futuro comienza hoy!
+          Descubre nuevas oportunidades y construye el futuro que siempre has soñado. Únete a una
+          comunidad donde el talento y la pasión se encuentran para crear algo increíble. Encuentra
+          el trabajo perfecto para ti y da el siguiente paso en tu carrera con nosotros. ¡Tu futuro
+          comienza hoy!
         </p>
       </div>
-      
+
       <div className="job-grid">
         {jobs.map((job) => (
           <div key={job.id} className="job-item">
@@ -66,17 +66,19 @@ const JobOfferPortal: React.FC = () => {
           </div>
         ))}
         {isLoggedIn && (
-            <button 
-              className="add-job-button" 
-              onClick={handleAddJobClick}              
-            >
-              <img 
-                src="/src/assets/plus-icon.svg" 
-                alt="Plus icon" 
-                style={{ height: '2em', width: 'auto', marginRight: '0.5em', flexShrink: 0 }} 
-              />
-            </button>
-          )}
+          <button className="add-job-button" onClick={handleAddJobClick}>
+            <img
+              src="/src/assets/plus-icon.svg"
+              alt="Plus icon"
+              style={{
+                height: '2em',
+                width: 'auto',
+                marginRight: '0.5em',
+                flexShrink: 0,
+              }}
+            />
+          </button>
+        )}
       </div>
     </div>
   );

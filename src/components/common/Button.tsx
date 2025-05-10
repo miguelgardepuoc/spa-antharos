@@ -1,16 +1,16 @@
 import { ButtonProps } from '../../types/formComponents';
 
-export const Button = ({ 
-  children, 
-  onClick, 
-  variant = 'primary', 
-  type = 'button', 
+export const Button = ({
+  children,
+  onClick,
+  variant = 'primary',
+  type = 'button',
   fullWidth = false,
   disabled = false,
-  isLoading = false
+  isLoading = false,
 }: ButtonProps) => {
   const buttonClass = `button ${variant} ${fullWidth ? 'full-width' : ''} ${isLoading ? 'loading' : ''}`;
-  
+
   return (
     <button
       type={type}

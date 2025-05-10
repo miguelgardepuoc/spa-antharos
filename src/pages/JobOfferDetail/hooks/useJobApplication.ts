@@ -13,10 +13,14 @@ export const useJobApplication = (jobOfferId: string) => {
   const [emailError, setEmailError] = useState<string>('');
   const [fileError, setFileError] = useState<string>('');
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [status, setStatus] = useState<SubmissionStatus>({ type: null, message: '' });
+  const [status, setStatus] = useState<SubmissionStatus>({
+    type: null,
+    message: '',
+  });
 
   const validateEmail = (email: string): boolean => {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   };
 
@@ -29,7 +33,7 @@ export const useJobApplication = (jobOfferId: string) => {
     if (e.target.files && e.target.files.length > 0) {
       const selectedFile = e.target.files[0];
       setFile(selectedFile);
-      
+
       if (selectedFile.type !== 'application/pdf') {
         setFileError('Please attach a PDF file');
       } else {
@@ -40,62 +44,61 @@ export const useJobApplication = (jobOfferId: string) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     setEmailError('');
     setFileError('');
-    
+
     if (!validateEmail(email)) {
       setEmailError('Please enter a valid email');
       return;
     }
-    
+
     if (!validateFile(file)) {
       setFileError('Please attach a PDF file');
       return;
     }
-    
+
     if (!jobOfferId) {
       setStatus({
         type: 'error',
-        message: 'Job offer not found'
+        message: 'Job offer not found',
       });
       return;
     }
-    
+
     try {
       setSubmitting(true);
       setStatus({ type: null, message: '' });
-  
+
       const candidateData = {
         personalEmail: email,
         id: uuidv4(),
         cv: file,
-        jobOfferId: jobOfferId
+        jobOfferId: jobOfferId,
       };
-      
+
       await addCandidate(candidateData);
-  
+
       setStatus({
         type: 'success',
-        message: 'Enhorabuena! Te has inscrito correctamente en esta oferta de trabajo.'
+        message: 'Enhorabuena! Te has inscrito correctamente en esta oferta de trabajo.',
       });
-      
+
       // Reset form
       setEmail('');
       setFile(null);
-      
     } catch (error: any) {
       console.error('Error submitting application:', error);
-  
+
       if (error?.response?.status === 409) {
         setStatus({
           type: 'warning',
-          message: 'Ya existe una inscripción para este email'
+          message: 'Ya existe una inscripción para este email',
         });
       } else {
         setStatus({
           type: 'error',
-          message: 'Ha ocurrido un error. Por favor, inténtalo de nuevo más tarde.'
+          message: 'Ha ocurrido un error. Por favor, inténtalo de nuevo más tarde.',
         });
       }
     } finally {
@@ -112,6 +115,6 @@ export const useJobApplication = (jobOfferId: string) => {
     submitting,
     status,
     handleFileChange,
-    handleSubmit
+    handleSubmit,
   };
 };

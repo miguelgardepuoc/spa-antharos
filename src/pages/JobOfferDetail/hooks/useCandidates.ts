@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
-import { fetchCandidatesByJobOffer, rejectCandidate, interviewCandidate } from '../../../services/candidateService';
+import {
+  fetchCandidatesByJobOffer,
+  rejectCandidate,
+  interviewCandidate,
+} from '../../../services/candidateService';
 import { hireCandidate } from '../../../services/employeeService';
 import { Candidate } from '../../../types/candidate';
 import { HireData } from '../../../types/hireCandidateForm';
@@ -12,10 +16,10 @@ export const useCandidates = (jobOfferId: string) => {
   const [updatingCandidateId, setUpdatingCandidateId] = useState<string | null>(null);
   const [showHirePopup, setShowHirePopup] = useState<boolean>(false);
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
-  
+
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-    
+
     if (token && jobOfferId) {
       fetchCandidatesData();
     }
@@ -38,9 +42,9 @@ export const useCandidates = (jobOfferId: string) => {
   const handleStatusChange = async (candidateId: string, newStatus: string) => {
     try {
       setUpdatingCandidateId(candidateId);
-      
-      const candidate = candidates.find(c => c.id === candidateId);
-      
+
+      const candidate = candidates.find((c) => c.id === candidateId);
+
       if (!candidate) {
         console.error(`Candidate with ID ${candidateId} not found`);
         return;
@@ -52,7 +56,7 @@ export const useCandidates = (jobOfferId: string) => {
         setUpdatingCandidateId(null);
         return;
       }
-      
+
       switch (newStatus) {
         case 'REJECTED':
           await rejectCandidate(candidateId);
@@ -65,36 +69,40 @@ export const useCandidates = (jobOfferId: string) => {
           setUpdatingCandidateId(null);
           return;
       }
-      
-      setCandidates(prevCandidates => 
-        prevCandidates.map(c => 
-          c.id === candidateId 
-            ? { ...c, status: newStatus as 'APPLIED' | 'INTERVIEWING' | 'HIRED' | 'REJECTED' } 
+
+      setCandidates((prevCandidates) =>
+        prevCandidates.map((c) =>
+          c.id === candidateId
+            ? {
+                ...c,
+                status: newStatus as 'APPLIED' | 'INTERVIEWING' | 'HIRED' | 'REJECTED',
+              }
             : c
         )
       );
-      
+
       Swal.fire({
         title: 'Estado actualizado',
         text: `El estado del candidato ha sido actualizado a ${
-          newStatus === 'REJECTED' ? 'Rechazado' : 
-          newStatus === 'INTERVIEWING' ? 'Entrevistando' : 
-          newStatus
+          newStatus === 'REJECTED'
+            ? 'Rechazado'
+            : newStatus === 'INTERVIEWING'
+              ? 'Entrevistando'
+              : newStatus
         }`,
         icon: 'success',
         confirmButtonText: 'Aceptar',
         timer: 2000,
-        timerProgressBar: true
+        timerProgressBar: true,
       });
-      
     } catch (error) {
       console.error('Error updating candidate status:', error);
-      
+
       Swal.fire({
         title: 'Error',
         text: 'Ha ocurrido un error al actualizar el estado del candidato.',
         icon: 'error',
-        confirmButtonText: 'Aceptar'
+        confirmButtonText: 'Aceptar',
       });
     } finally {
       setUpdatingCandidateId(null);
@@ -103,26 +111,24 @@ export const useCandidates = (jobOfferId: string) => {
 
   const handleHireConfirm = async (hireData: HireData) => {
     if (!selectedCandidate) return;
-    
+
     try {
       await hireCandidate(hireData);
-      
-      setCandidates(prevCandidates => 
-        prevCandidates.map(candidate => 
-          candidate.id === selectedCandidate.id 
-            ? { ...candidate, status: 'HIRED' } 
-            : candidate
+
+      setCandidates((prevCandidates) =>
+        prevCandidates.map((candidate) =>
+          candidate.id === selectedCandidate.id ? { ...candidate, status: 'HIRED' } : candidate
         )
       );
-      
+
       setShowHirePopup(false);
       setSelectedCandidate(null);
-      
+
       Swal.fire({
         title: 'Contratado',
         text: 'El candidato ha sido contratado exitosamente.',
         icon: 'success',
-        confirmButtonText: 'Aceptar'
+        confirmButtonText: 'Aceptar',
       });
     } catch (error: any) {
       console.error('Error hiring candidate:', error);
@@ -161,12 +167,12 @@ export const useCandidates = (jobOfferId: string) => {
             break;
         }
       }
-      
+
       Swal.fire({
         title: 'Error',
         text: errorMessage,
         icon: 'error',
-        confirmButtonText: 'Aceptar'
+        confirmButtonText: 'Aceptar',
       });
     }
   };
@@ -181,6 +187,6 @@ export const useCandidates = (jobOfferId: string) => {
     setShowHirePopup,
     setSelectedCandidate,
     handleStatusChange,
-    handleHireConfirm
+    handleHireConfirm,
   };
 };

@@ -8,12 +8,12 @@ interface DepartmentTableProps {
   onDelete: (department: Department) => void;
   onEditHead: (department: Department) => void;
 }
- 
-const DepartmentTable: React.FC<DepartmentTableProps> = ({ 
+
+const DepartmentTable: React.FC<DepartmentTableProps> = ({
   departments,
-  onRename, 
-  onDelete, 
-  onEditHead 
+  onRename,
+  onDelete,
+  onEditHead,
 }) => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
@@ -23,7 +23,7 @@ const DepartmentTable: React.FC<DepartmentTableProps> = ({
     const handleClickOutside = () => {
       setActiveMenu(null);
     };
-    
+
     document.addEventListener('click', handleClickOutside);
     return () => {
       document.removeEventListener('click', handleClickOutside);
@@ -46,17 +46,17 @@ const DepartmentTable: React.FC<DepartmentTableProps> = ({
         <td>{department.departmentHeadFullName || '—'}</td>
         <td>
           <div className="dropdown-container">
-            <button 
+            <button
               className="menu-button"
               onClick={(e) => toggleMenu(department.id, e)}
               title="Opciones"
             >
               <span className="material-icons">settings</span>
             </button>
-            
+
             {activeMenu === department.id && (
               <div className="dropdown-menu">
-                <button 
+                <button
                   className="menu-item"
                   onClick={() => {
                     onRename(department);
@@ -66,7 +66,7 @@ const DepartmentTable: React.FC<DepartmentTableProps> = ({
                   <span className="material-icons">edit</span>
                   <span>Renombrar</span>
                 </button>
-                <button 
+                <button
                   className="menu-item"
                   onClick={() => {
                     onEditHead(department);
@@ -76,7 +76,7 @@ const DepartmentTable: React.FC<DepartmentTableProps> = ({
                   <span className="material-icons">person</span>
                   <span>Editar Responsable</span>
                 </button>
-                <button 
+                <button
                   className="menu-item"
                   onClick={() => {
                     onDelete(department);
@@ -95,17 +95,13 @@ const DepartmentTable: React.FC<DepartmentTableProps> = ({
   };
 
   return (
-      <Table
-        headers={headers}
-        data={departments}
-        renderRow={renderDepartmentRow}
-        emptyMessage={
-          <p className="no-departments">
-            Todavía no hay departamentos disponibles
-          </p>
-        }
-        loadingMessage="Cargando departamentos..."
-      />
+    <Table
+      headers={headers}
+      data={departments}
+      renderRow={renderDepartmentRow}
+      emptyMessage={<p className="no-departments">Todavía no hay departamentos disponibles</p>}
+      loadingMessage="Cargando departamentos..."
+    />
   );
 };
 

@@ -73,9 +73,7 @@ const CandidatesTable: React.FC<CandidatesTableProps> = ({
         isLoading={loading}
         error={error}
         emptyMessage={
-          <p className="no-candidates">
-            Todavía no hay candidatos para esta oferta de trabajo
-          </p>
+          <p className="no-candidates">Todavía no hay candidatos para esta oferta de trabajo</p>
         }
         loadingMessage="Cargando candidatos..."
       />

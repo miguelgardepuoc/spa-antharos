@@ -13,7 +13,7 @@ const JobDetailsSection: React.FC<JobDetailsSectionProps> = ({ job }) => {
       }
       return value.toString();
     };
-    
+
     return `${formatValue(min)} - ${formatValue(max)} €`;
   };
 
@@ -28,7 +28,7 @@ const JobDetailsSection: React.FC<JobDetailsSectionProps> = ({ job }) => {
           <span className="meta-label">Teletrabajo:</span> {job.remote}%
         </div>
       </div>
-      
+
       <div className="job-description-section">
         <h2>Descripción</h2>
         <p>{job.description}</p>

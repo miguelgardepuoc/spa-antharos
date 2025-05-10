@@ -1,17 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { DropdownProps } from '../../types/formComponents';
 
-export function Dropdown<T>({ 
-  label, 
-  value, 
-  options, 
-  loading, 
-  error: apiError, 
-  renderOption, 
-  onSelect, 
-  placeholder = 'Seleccionar', 
-  required = false, 
-  error: validationError 
+export function Dropdown<T>({
+  label,
+  value,
+  options,
+  loading,
+  error: apiError,
+  renderOption,
+  onSelect,
+  placeholder = 'Seleccionar',
+  required = false,
+  error: validationError,
 }: DropdownProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -56,39 +56,41 @@ export function Dropdown<T>({
         {label}
         {required && <span className="text-error">*</span>}
       </label>
-      <div 
-        className={`dropdown ${validationError ? 'error' : ''}`} 
-        ref={dropdownRef} 
+      <div
+        className={`dropdown ${validationError ? 'error' : ''}`}
+        ref={dropdownRef}
         data-open={isOpen}
       >
-        <button 
-          type="button" 
-          className="dropdown-toggle" 
-          onClick={() => setIsOpen(!isOpen)} 
-          aria-haspopup="listbox" 
-          aria-expanded={isOpen} 
+        <button
+          type="button"
+          className="dropdown-toggle"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
           aria-invalid={!!validationError}
         >
-          <span className={!value ? 'text-muted' : ''}>
-            {value || placeholder}
-          </span>
+          <span className={!value ? 'text-muted' : ''}>{value || placeholder}</span>
           <span className="dropdown-arrow">▼</span>
         </button>
         {isOpen && (
           <ul className="dropdown-menu" role="listbox">
             {loading ? (
-              <li className="dropdown-item-loading" role="status">Cargando opciones...</li>
+              <li className="dropdown-item-loading" role="status">
+                Cargando opciones...
+              </li>
             ) : apiError ? (
-              <li className="dropdown-item-error" role="alert">Error: {apiError}</li>
+              <li className="dropdown-item-error" role="alert">
+                Error: {apiError}
+              </li>
             ) : options.length === 0 ? (
               <li className="dropdown-item-empty">No hay opciones disponibles</li>
             ) : (
               options.map((option, index) => (
-                <li 
+                <li
                   key={getOptionKey(option, index)}
-                  className="dropdown-item" 
-                  onClick={() => handleSelect(option)} 
-                  role="option" 
+                  className="dropdown-item"
+                  onClick={() => handleSelect(option)}
+                  role="option"
                   aria-selected={isOptionSelected(option)}
                 >
                   {renderOption(option)}
@@ -99,7 +101,9 @@ export function Dropdown<T>({
         )}
       </div>
       {validationError && (
-        <div className="form-error" role="alert">{validationError}</div>
+        <div className="form-error" role="alert">
+          {validationError}
+        </div>
       )}
     </div>
   );

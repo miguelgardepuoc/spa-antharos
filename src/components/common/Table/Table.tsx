@@ -48,9 +48,7 @@ const Table: React.FC<TableProps> = ({
             ))}
           </tr>
         </thead>
-        <tbody className={bodyClassName}>
-          {data.map((item, index) => renderRow(item, index))}
-        </tbody>
+        <tbody className={bodyClassName}>{data.map((item, index) => renderRow(item, index))}</tbody>
       </table>
     </div>
   );

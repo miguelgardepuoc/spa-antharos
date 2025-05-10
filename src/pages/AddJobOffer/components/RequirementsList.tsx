@@ -1,12 +1,12 @@
 import { RequirementsListProps } from '../../../types/formComponents';
 
-export const RequirementsList = ({ 
-  requirements, 
-  onChange, 
-  onAdd, 
+export const RequirementsList = ({
+  requirements,
+  onChange,
+  onAdd,
   onRemove,
   required = false,
-  error
+  error,
 }: RequirementsListProps) => {
   return (
     <div className="form-field">
@@ -49,7 +49,9 @@ export const RequirementsList = ({
         </button>
       </div>
       {error && (
-        <div className="form-error" role="alert">{error}</div>
+        <div className="form-error" role="alert">
+          {error}
+        </div>
       )}
     </div>
   );

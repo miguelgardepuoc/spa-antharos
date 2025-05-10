@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Employee, EmployeeStatus } from '../../../types/employee';
-import { fetchEmployees, markEmployeeAsInactive, putEmployeeOnLeave, terminateEmployee } from '../../../services/employeeService';
+import {
+  fetchEmployees,
+  markEmployeeAsInactive,
+  putEmployeeOnLeave,
+  terminateEmployee,
+} from '../../../services/employeeService';
 import { showConfirmationAlert } from '../../../utils/alerts';
 import Table from '../../../components/common/table/Table';
 
@@ -71,10 +76,8 @@ const EmployeeTable: React.FC = () => {
       }
 
       if (success) {
-        setEmployees(prevEmployees =>
-          prevEmployees.map(emp =>
-            emp.id === employeeId ? { ...emp, status: newStatus } : emp
-          )
+        setEmployees((prevEmployees) =>
+          prevEmployees.map((emp) => (emp.id === employeeId ? { ...emp, status: newStatus } : emp))
         );
       }
     } finally {
@@ -83,20 +86,20 @@ const EmployeeTable: React.FC = () => {
   };
 
   const headers = [
-    'Número', 
-    'Username', 
-    'Nombre', 
-    'Salario', 
-    'DNI', 
-    'Puesto', 
-    'Alta', 
-    'Departamento', 
-    'Estado'
+    'Número',
+    'Username',
+    'Nombre',
+    'Salario',
+    'DNI',
+    'Puesto',
+    'Alta',
+    'Departamento',
+    'Estado',
   ];
 
   const renderEmployeeRow = (employee: Employee) => {
     const isUpdating = updatingEmployeeId === employee.id;
-    
+
     return (
       <tr key={employee.id}>
         <td>{employee.employeeNumber}</td>
@@ -126,19 +129,15 @@ const EmployeeTable: React.FC = () => {
   };
 
   return (
-      <Table
-        headers={headers}
-        data={employees}
-        renderRow={renderEmployeeRow}
-        isLoading={isLoading}
-        error={error}
-        emptyMessage={
-          <p className="no-employees">
-            No hay empleados disponibles
-          </p>
-        }
-        loadingMessage="Cargando empleados..."
-      />
+    <Table
+      headers={headers}
+      data={employees}
+      renderRow={renderEmployeeRow}
+      isLoading={isLoading}
+      error={error}
+      emptyMessage={<p className="no-employees">No hay empleados disponibles</p>}
+      loadingMessage="Cargando empleados..."
+    />
   );
 };
 

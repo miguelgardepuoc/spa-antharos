@@ -20,7 +20,7 @@ export const useJobTitles = () => {
         setLoading(false);
       }
     };
-    
+
     getJobTitles();
   }, []);
 

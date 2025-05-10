@@ -1,8 +1,8 @@
 export interface AuthResponse {
-    token: string;
-  }
-  
+  token: string;
+}
+
 export interface ApiError {
-message: string;
-status?: number;
+  message: string;
+  status?: number;
 }

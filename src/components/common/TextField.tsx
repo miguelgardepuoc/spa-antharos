@@ -1,19 +1,19 @@
 import { TextFieldProps } from '../../types/formComponents';
 import './TextField.css';
 
-export const TextField = ({ 
-  label, 
-  id, 
-  value, 
-  onChange, 
-  placeholder, 
-  multiline = false, 
+export const TextField = ({
+  label,
+  id,
+  value,
+  onChange,
+  placeholder,
+  multiline = false,
   rows = 3,
   required = false,
   maxLength,
-  type = "text",
+  type = 'text',
   onBlur,
-  error
+  error,
 }: TextFieldProps) => {
   return (
     <div className="form-field">
@@ -55,7 +55,9 @@ export const TextField = ({
         </div>
       )}
       {error && (
-        <div className="form-error" role="alert">{error}</div>
+        <div className="form-error" role="alert">
+          {error}
+        </div>
       )}
     </div>
   );

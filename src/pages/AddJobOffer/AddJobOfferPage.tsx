@@ -19,7 +19,7 @@ const initialFormState: FormState = {
   minSalary: '',
   maxSalary: '',
   description: '',
-  requirements: ['']
+  requirements: [''],
 };
 
 interface JobOfferRouteState extends FormState {
@@ -31,7 +31,7 @@ export const AddJobOfferPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { jobTitles, loading: loadingJobs, error: jobsError } = useJobTitles();
-  
+
   const {
     formState,
     errors,
@@ -43,7 +43,7 @@ export const AddJobOfferPage = () => {
     addRequirement,
     removeRequirement,
     touchAllFields,
-    setFormState
+    setFormState,
   } = useForm(initialFormState);
 
   const { submitState, submitJobOffer, updateJobOffer } = useJobOfferSubmit();
@@ -57,27 +57,27 @@ export const AddJobOfferPage = () => {
   useEffect(() => {
     if (hasInitializedRef.current) return;
     hasInitializedRef.current = true;
-  
+
     const editJobOfferData = sessionStorage.getItem('editJobOfferData');
     const editData = editJobOfferData
       ? JSON.parse(editJobOfferData)
       : (location.state as JobOfferRouteState | undefined);
-  
+
     if (editData) {
       setIsEditMode(true);
-      setFormState({        
+      setFormState({
         selectedJobTitle: editData.selectedJobTitle,
         remotePercentage: editData.remotePercentage,
         minSalary: editData.minSalary,
         maxSalary: editData.maxSalary,
         description: editData.description,
-        requirements: editData.requirements
+        requirements: editData.requirements,
       });
-  
+
       if (editData.selectedJobTitle) {
         setJobTitleText(editData.selectedJobTitle.description);
       }
-  
+
       sessionStorage.setItem('editJobId', editData.jobOfferId);
       sessionStorage.removeItem('editJobOfferData');
       document.title = 'Editar oferta de trabajo';
@@ -110,9 +110,9 @@ export const AddJobOfferPage = () => {
     const formErrors = validateForm();
 
     if (Object.keys(formErrors).length > 0) return;
-    const id = isEditMode 
-    ? sessionStorage.getItem('editJobId') ?? jobOfferId ?? uuidv4() 
-    : uuidv4();
+    const id = isEditMode
+      ? (sessionStorage.getItem('editJobId') ?? jobOfferId ?? uuidv4())
+      : uuidv4();
     const jobOffer = {
       id,
       jobTitleId: formState.selectedJobTitle!.id,
@@ -121,8 +121,8 @@ export const AddJobOfferPage = () => {
       maxSalary: Number(formState.maxSalary),
       remote: REMOTE_PERCENTAGE_MAP[formState.remotePercentage] || 0,
       requirement: (formState.requirements as string[])
-      .filter((req: string) => req.trim() !== '')
-      .join(';')
+        .filter((req: string) => req.trim() !== '')
+        .join(';'),
     };
 
     if (isEditMode) {
@@ -191,8 +191,8 @@ export const AddJobOfferPage = () => {
 
         {submitSuccess === true && !isSubmitting && (
           <div className="form-success-message" role="alert">
-            {isEditMode 
-              ? '¡Oferta de empleo actualizada con éxito!' 
+            {isEditMode
+              ? '¡Oferta de empleo actualizada con éxito!'
               : '¡Oferta de empleo creada con éxito!'}
           </div>
         )}
@@ -278,9 +278,9 @@ export const AddJobOfferPage = () => {
 
         <div className="form-actions">
           {isEditMode && (
-            <Button 
-              type="button" 
-              variant="secondary" 
+            <Button
+              type="button"
+              variant="secondary"
               onClick={() => {
                 const editJobId = sessionStorage.getItem('editJobId');
                 sessionStorage.removeItem('editJobId');
@@ -290,9 +290,9 @@ export const AddJobOfferPage = () => {
               Cancelar
             </Button>
           )}
-          <Button 
-            type="submit" 
-            variant="primary" 
+          <Button
+            type="submit"
+            variant="primary"
             fullWidth={!isEditMode}
             disabled={isSubmitting}
             isLoading={isSubmitting}

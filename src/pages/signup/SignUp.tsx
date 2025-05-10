@@ -4,42 +4,42 @@ import { signup } from '../../services/authService';
 import './SignUp.css';
 
 export default function SignUp() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [passwordError, setPasswordError] = useState('');
-    const [apiError, setApiError] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [apiError, setApiError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setPasswordError('');
     setApiError('');
-    
+
     if (password !== confirmPassword) {
       setPasswordError('Las contraseñas no coinciden');
       return;
     }
-    
+
     if (password.length < 8) {
       setPasswordError('La contraseña debe tener al menos 8 caracteres de longitud');
       return;
     }
 
     setIsLoading(true);
-    
+
     try {
-        const result = await signup(username, password);
-          console.log('Signup successful:', result);
-          navigate('/login');
-      } catch (err) {
-        console.log('Signup successful:', err);
-        setApiError('An unexpected error occurred. Please try again.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+      const result = await signup(username, password);
+      console.log('Signup successful:', result);
+      navigate('/login');
+    } catch (err) {
+      console.log('Signup successful:', err);
+      setApiError('An unexpected error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="signup-container">
@@ -54,11 +54,11 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
               {apiError}
             </div>
           )}
-          
+
           <form onSubmit={handleSubmit}>
             <div className="input-group">
               <label className="input-label" htmlFor="username">
-              Nombre de usuario
+                Nombre de usuario
               </label>
               <input
                 id="username"
@@ -70,10 +70,10 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                 required
               />
             </div>
-            
+
             <div className="input-group">
               <label className="input-label" htmlFor="password">
-              Contraseña
+                Contraseña
               </label>
               <input
                 id="password"
@@ -85,10 +85,10 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                 required
               />
             </div>
-            
+
             <div className="input-group">
               <label className="input-label" htmlFor="confirmPassword">
-              Confirmar contraseña
+                Confirmar contraseña
               </label>
               <input
                 id="confirmPassword"
@@ -99,22 +99,18 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                 className="form-input"
                 required
               />
-              {passwordError && (
-                <p className="error-text">{passwordError}</p>
-              )}
+              {passwordError && <p className="error-text">{passwordError}</p>}
             </div>
-            
-            <button
-              type="submit"
-              className="submit-button"
-              disabled={isLoading}
-            >
-                {isLoading ? 'Registrandose...' : 'Registrarse'}
-              
+
+            <button type="submit" className="submit-button" disabled={isLoading}>
+              {isLoading ? 'Registrandose...' : 'Registrarse'}
             </button>
-            
+
             <p className="login-text">
-            Ya estás registrado? <a href="/login" className="login-link">Iniciar sesión</a>
+              Ya estás registrado?{' '}
+              <a href="/login" className="login-link">
+                Iniciar sesión
+              </a>
             </p>
           </form>
         </div>

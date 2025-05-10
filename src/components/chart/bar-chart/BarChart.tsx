@@ -9,13 +9,13 @@ interface BarChartProps {
   formatValue?: (value: number) => string;
 }
 
-export const BarChart: React.FC<BarChartProps> = ({ 
-  data, 
-  title, 
+export const BarChart: React.FC<BarChartProps> = ({
+  data,
+  title,
   valueKey,
-  formatValue = (val) => val.toString() 
+  formatValue = (val) => val.toString(),
 }) => {
-  const maxValue = Math.max(...data.map(item => item[valueKey])) * 1.1;
+  const maxValue = Math.max(...data.map((item) => item[valueKey])) * 1.1;
 
   return (
     <div className="chart-container">
@@ -23,23 +23,20 @@ export const BarChart: React.FC<BarChartProps> = ({
       <div className="bar-chart">
         {data.map((item, index) => {
           const barHeight = (item[valueKey] / maxValue) * 100;
-          
+
           return (
             <div key={index} className="bar-column">
               <div className="bar-label-container">
-                <div 
-                  className="bar-label" 
-                  style={{ bottom: `calc(${barHeight}% + 5px)` }}
-                >
+                <div className="bar-label" style={{ bottom: `calc(${barHeight}% + 5px)` }}>
                   {formatValue(item[valueKey])}
                 </div>
               </div>
               <div className="bar-wrapper">
-                <div 
-                  className="bar" 
-                  style={{ 
+                <div
+                  className="bar"
+                  style={{
                     height: `${barHeight}%`,
-                    backgroundColor: '#4285F4' 
+                    backgroundColor: '#4285F4',
                   }}
                 ></div>
               </div>

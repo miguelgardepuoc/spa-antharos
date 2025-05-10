@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {fetchDepartments} from '../../../../services/departmentService.ts';
+import { fetchDepartments } from '../../../../services/departmentService.ts';
 import { Department } from '../../../../types/department.ts';
 import { HireData } from '../../../../types/hireCandidateForm.ts';
 import { v4 as uuidv4 } from 'uuid';
@@ -10,7 +10,7 @@ interface HireCandidatePopupProps {
   onClose: () => void;
   onConfirm: (hireData: HireData) => void;
   candidateId: string;
-  candidateName: string;  
+  candidateName: string;
 }
 
 const HireCandidatePopup: React.FC<HireCandidatePopupProps> = ({
@@ -18,21 +18,21 @@ const HireCandidatePopup: React.FC<HireCandidatePopupProps> = ({
   onClose,
   onConfirm,
   candidateId,
-  candidateName
+  candidateName,
 }) => {
   const [departments, setDepartments] = useState<Department[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   function splitFullName(fullName: string): { name: string; surname: string } {
     const parts = fullName.trim().split(/\s+/);
     const name = parts[0] || '';
     const surname = parts.slice(1).join(' ') || '';
     return { name, surname };
   }
-  
+
   const { name, surname } = splitFullName(candidateName);
-  
+
   const [formData, setFormData] = useState<HireData>({
     id: uuidv4(),
     dni: '',
@@ -43,9 +43,9 @@ const HireCandidatePopup: React.FC<HireCandidatePopupProps> = ({
     departmentId: '',
     hiringDate: '',
     jobTitleId: '',
-    candidateId: candidateId
+    candidateId: candidateId,
   });
-  
+
   useEffect(() => {
     const getDepartments = async () => {
       if (!isOpen) return;
@@ -60,33 +60,35 @@ const HireCandidatePopup: React.FC<HireCandidatePopupProps> = ({
         setLoading(false);
       }
     };
-    
+
     getDepartments();
   }, [isOpen]);
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onConfirm(formData);
   };
-  
+
   if (!isOpen) return null;
-  
+
   return (
     <div className="popup-overlay">
       <div className="popup-container">
         <div className="popup-header">
           <h2>Contratar candidato</h2>
-          <button className="close-button" onClick={onClose}>×</button>
+          <button className="close-button" onClick={onClose}>
+            ×
+          </button>
         </div>
-        
+
         <div className="popup-content">
           <form onSubmit={handleSubmit}>
             <div className="form-group">
@@ -100,7 +102,7 @@ const HireCandidatePopup: React.FC<HireCandidatePopupProps> = ({
                 required
               />
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="name">Nombre</label>
               <input
@@ -112,7 +114,7 @@ const HireCandidatePopup: React.FC<HireCandidatePopupProps> = ({
                 required
               />
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="surname">Apellidos</label>
               <input
@@ -124,7 +126,7 @@ const HireCandidatePopup: React.FC<HireCandidatePopupProps> = ({
                 required
               />
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="telephoneNumber">Número de teléfono</label>
               <input
@@ -136,7 +138,7 @@ const HireCandidatePopup: React.FC<HireCandidatePopupProps> = ({
                 required
               />
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="salary">Salario</label>
               <input
@@ -148,7 +150,7 @@ const HireCandidatePopup: React.FC<HireCandidatePopupProps> = ({
                 required
               />
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="departmentId">Departamento</label>
               {loading ? (
@@ -164,7 +166,7 @@ const HireCandidatePopup: React.FC<HireCandidatePopupProps> = ({
                   required
                 >
                   <option value="">Seleccionar departamento</option>
-                  {departments.map(dept => (
+                  {departments.map((dept) => (
                     <option key={dept.id} value={dept.id}>
                       {dept.description}
                     </option>
@@ -172,7 +174,7 @@ const HireCandidatePopup: React.FC<HireCandidatePopupProps> = ({
                 </select>
               )}
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="hiringDate">Fecha de inicio</label>
               <input
@@ -184,7 +186,7 @@ const HireCandidatePopup: React.FC<HireCandidatePopupProps> = ({
                 required
               />
             </div>
-            
+
             <div className="form-actions">
               <button type="button" className="cancel-button" onClick={onClose}>
                 Cancelar

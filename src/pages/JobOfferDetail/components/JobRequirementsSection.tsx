@@ -10,9 +10,7 @@ const JobRequirementsSection: React.FC<JobRequirementsSectionProps> = ({ require
       <h2>Requisitos</h2>
       <ul>
         {requirements.split(';').map((req, index) => (
-          <li key={index}>
-            {req.trim().charAt(0).toUpperCase() + req.trim().slice(1)}
-          </li>
+          <li key={index}>{req.trim().charAt(0).toUpperCase() + req.trim().slice(1)}</li>
         ))}
       </ul>
     </div>
