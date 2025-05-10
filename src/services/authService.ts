@@ -1,5 +1,6 @@
 import apiClient from './apiClient';
 import { AuthResponse, ApiError } from '../types/login';
+import { jwtDecode } from 'jwt-decode';
 
 export const signup = async (username: string, password: string): Promise<AuthResponse | ApiError> => {
   try {
@@ -28,6 +29,8 @@ export const login = async (username: string, password: string): Promise<AuthRes
     
     if (response.data.token) {
       localStorage.setItem('authToken', response.data.token);
+      const decoded: { role: string, exp: number } = jwtDecode(response.data.token);
+      localStorage.setItem('userRole', decoded.role);
     }
     
     return response.data;

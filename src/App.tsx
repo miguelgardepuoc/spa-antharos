@@ -47,6 +47,11 @@ const App: React.FC = () => {
               <Route path="/people-analytics" element={<PeopleAnalytics />} />
             </Route>
 
+            <Route element={<RoleProtectedRoute allowedRoles={['DEPARTMENT_HEAD','ROLE_COMPANY_MANAGEMENT']} />}>
+              <Route path="/add-job-offer" element={<AddJobOfferPage />} />
+              <Route path="/corporate-management" element={<CorporateManagement />} />
+            </Route>
+
             <Route element={<RoleProtectedRoute allowedRoles={['ROLE_COMPANY_MANAGEMENT']} />}>
               <Route path="/people-analytics" element={<PeopleAnalytics />} />
             </Route>

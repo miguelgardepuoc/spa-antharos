@@ -48,55 +48,16 @@
     to { opacity: 1; transform: translateY(0); }
   }
   
-  .form-field {
-    margin-bottom: 1.5rem;
-    position: relative;
-  }
-  
-  .form-label {
-    display: block;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-    transition: var(--transition);
-  }
-  
-  .form-input,
-  .form-textarea {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 2px solid var(--border-color);
-    border-radius: var(--border-radius);
-    font-size: 1rem;
-    line-height: 1.5;
-    color: var(--text-primary);
-    background-color: var(--bg-white);
-    transition: var(--transition);
-    box-shadow: var(--shadow-sm);
-  }
-  
   .form-input:hover,
-  .form-textarea:hover {
-    border-color: #cbd5e1;
-  }
-  
+  .form-textarea:hover,
   .form-input:focus,
-  .form-textarea:focus {
+  .form-textarea:focus,
+  .form-input.error,
+  .form-textarea.error {
     outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
-  }
-  
-  .form-textarea {
-    resize: vertical;
-    min-height: 120px;
-  }
-  
-  .form-input::placeholder,
-  .form-textarea::placeholder {
-    color: #94a3b8;
-    opacity: 1;
+    box-sizing: border-box;
+    width: 100%;
+    height: auto; /* Keep height consistent */
   }
   
   .dropdown {
@@ -410,7 +371,6 @@
     }
   }
   
-  /* Accesibilidad - foco visible para usuarios de teclado */
   :focus {
     outline: none;
   }

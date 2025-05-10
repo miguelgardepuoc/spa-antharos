@@ -17,6 +17,7 @@ const JobDetail: React.FC = () => {
   const { id = '' } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const isLoggedIn = Boolean(localStorage.getItem('authToken'));
+  const isEmployee = localStorage.getItem('userRole') == 'ROLE_EMPLOYEE';
   
   const { 
     job, 
@@ -85,7 +86,7 @@ const JobDetail: React.FC = () => {
         <div className="job-image">
           <img src={job.photoUrl} alt={job.jobTitle} />
           
-          {isLoggedIn && (
+          {isLoggedIn && !isEmployee && (
             <JobActions
               onEdit={handleEditJobOffer}
               onRemove={handleRemoveJobOffer}
@@ -95,7 +96,7 @@ const JobDetail: React.FC = () => {
         </div>
       </div>
 
-      {isLoggedIn && (
+      {isLoggedIn && !isEmployee && (
         <CandidatesTable
           candidates={candidates}
           loading={loadingCandidates}

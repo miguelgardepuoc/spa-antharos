@@ -48,7 +48,7 @@ const HireCandidatePopup: React.FC<HireCandidatePopupProps> = ({
   
   useEffect(() => {
     const getDepartments = async () => {
-      if (!isOpen) return;      
+      if (!isOpen) return;
       try {
         setLoading(true);
         const data = await fetchDepartments();

@@ -37,15 +37,8 @@ const Header: React.FC<HeaderProps> = ({
       setIsLoggedIn(!!token);
   
       if (token) {
-        try {
-          const decoded: { role: string, exp: number } = jwtDecode(token);
-          setUserRole(decoded.role || null);
-        } catch (error) {
-          console.error('Error decoding token', error);
-          setUserRole(null);
-        }
-      } else {
-        setUserRole(null);
+        const userRole = localStorage.getItem('userRole');
+        setUserRole(userRole);
       }
     };
   
@@ -76,6 +69,7 @@ const Header: React.FC<HeaderProps> = ({
 
   const handleLogoutClick = useCallback(() => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('userRole');
     setIsLoggedIn(false);
     navigate('/');
   }, [navigate]);
@@ -90,6 +84,10 @@ const Header: React.FC<HeaderProps> = ({
 
   const filteredNavigationItems = navigationItems.filter(item => {
     if (item.path === '/people-analytics' && userRole !== 'ROLE_COMPANY_MANAGEMENT') {
+      return false;
+    } else if (item.path === '/corporate-management' && userRole == 'ROLE_EMPLOYEE') {
+      return false;
+    } else if (item.path === '/job-offers' && userRole == 'ROLE_EMPLOYEE') {
       return false;
     }
     return true;
