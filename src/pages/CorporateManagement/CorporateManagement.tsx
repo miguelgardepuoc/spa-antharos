@@ -188,7 +188,7 @@ const CorporateManagement: React.FC = () => {
 
       <section className="employees-section">
         <h2>Plantilla</h2>
-        <EmployeeTable employees={employees} />
+        <EmployeeTable />
       </section>
 
       {userRole === 'ROLE_COMPANY_MANAGEMENT' && (

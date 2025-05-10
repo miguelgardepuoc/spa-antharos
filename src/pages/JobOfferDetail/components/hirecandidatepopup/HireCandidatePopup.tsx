@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {fetchDepartments} from '../../services/departmentService.ts';
-import { Department } from '../../types/department.ts';
-import { HireData } from '../../types/hireCandidateForm.ts';
+import {fetchDepartments} from '../../../../services/departmentService.ts';
+import { Department } from '../../../../types/department.ts';
+import { HireData } from '../../../../types/hireCandidateForm.ts';
 import { v4 as uuidv4 } from 'uuid';
 import './HireCandidatePopup.css';
 

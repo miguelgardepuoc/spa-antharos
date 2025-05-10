@@ -7,7 +7,7 @@ import { Button } from '../../components/common/button';
 import { RequirementsList } from '../../components/forms/requirements';
 import { useJobTitles } from '../../hooks/useJobTitles';
 import { useForm } from '../../hooks/useForm';
-import { useJobOfferSubmit } from '../../hooks/useJobOfferSubmit';
+import { useJobOfferSubmit } from './hooks/useJobOfferSubmit';
 import { JobTitle } from '../../types/jobTitle';
 import { FormState } from './types/addJobOfferForm';
 import { REMOTE_OPTIONS, REMOTE_PERCENTAGE_MAP } from '../../utils/constants';
@@ -120,7 +120,9 @@ export const AddJobOfferPage = () => {
       minSalary: Number(formState.minSalary),
       maxSalary: Number(formState.maxSalary),
       remote: REMOTE_PERCENTAGE_MAP[formState.remotePercentage] || 0,
-      requirement: formState.requirements.filter(req => req.trim() !== '').join(';')
+      requirement: (formState.requirements as string[])
+      .filter((req: string) => req.trim() !== '')
+      .join(';')
     };
 
     if (isEditMode) {
@@ -302,3 +304,5 @@ export const AddJobOfferPage = () => {
     </div>
   );
 };
+
+export default AddJobOfferPage;

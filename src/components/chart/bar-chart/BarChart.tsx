@@ -1,10 +1,9 @@
 import React from 'react';
-import { EmployeeData } from '../../../types/analytics';
 import '../Charts.css';
 import './BarChart.css';
 
 interface BarChartProps {
-  data: EmployeeData[];
+  data: any[];
   title: string;
   valueKey: 'count' | 'cost';
   formatValue?: (value: number) => string;

@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { JobOfferForm } from '../types/addJobOfferForm';
-import { createJobOffer, modifyJobOffer } from '../services/jobOfferService';
-import { REMOTE_PERCENTAGE_MAP } from '../utils/constants';
+import { createJobOffer, modifyJobOffer } from '../../../services/jobOfferService';
 
 export interface SubmitState {
   isSubmitting: boolean;

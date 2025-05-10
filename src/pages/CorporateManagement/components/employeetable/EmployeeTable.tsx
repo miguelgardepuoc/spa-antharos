@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Employee, EmployeeStatus } from '../../../../types/employee';
 import { fetchEmployees, markEmployeeAsInactive, putEmployeeOnLeave, terminateEmployee } from '../../../../services/employeeService';
-import Table, { Column } from '../../../../components/common/table/Table';
 import { showConfirmationAlert } from '../../../../utils/alerts';
 import './EmployeeTable.css';
 
@@ -9,6 +8,7 @@ const EmployeeTable: React.FC = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [updatingEmployeeId, setUpdatingEmployeeId] = useState<string | null>(null);
 
   useEffect(() => {
     const loadEmployees = async () => {
@@ -29,99 +29,128 @@ const EmployeeTable: React.FC = () => {
   }, []);
 
   const handleStatusChange = async (employeeId: string, newStatus: EmployeeStatus) => {
-    var success = false;
+    setUpdatingEmployeeId(employeeId);
+    let success = false;
 
-    switch (newStatus) {
-      case 'ON_LEAVE':
-        const leaveResult = await showConfirmationAlert({
-          title: '¿Dar de baja al empleado?',
-          text: 'Puede ser por enfermedad, maternidad, etc',
-          icon: 'question',
-        });
-        if (leaveResult.isConfirmed) {
-          await putEmployeeOnLeave(employeeId);
-          success = true;
-        }
-        break;
-      case 'TERMINATED':
-        const terminateResult = await showConfirmationAlert({
-          title: '¿Despedir al empleado?',
-          icon: 'question',
-        });
-        if (terminateResult.isConfirmed) {
-          await terminateEmployee(employeeId);
-          success = true;
-        }
-        break;
-      case 'INACTIVE':
-        const inactiveResult = await showConfirmationAlert({
-          title: '¿Se trata de un ex-empleado?',
-          text: 'El empleado ya no tiene vinculación laboral, pero sin despido formal',
-          icon: 'question',
-        });
-        if (inactiveResult.isConfirmed) {
-          await markEmployeeAsInactive(employeeId);
-          success = true;
-        }
-        return;
-      default:
-        return;
-    }
+    try {
+      switch (newStatus) {
+        case 'ON_LEAVE':
+          const leaveResult = await showConfirmationAlert({
+            title: '¿Dar de baja al empleado?',
+            text: 'Puede ser por enfermedad, maternidad, etc',
+            icon: 'question',
+          });
+          if (leaveResult.isConfirmed) {
+            await putEmployeeOnLeave(employeeId);
+            success = true;
+          }
+          break;
+        case 'TERMINATED':
+          const terminateResult = await showConfirmationAlert({
+            title: '¿Despedir al empleado?',
+            icon: 'question',
+          });
+          if (terminateResult.isConfirmed) {
+            await terminateEmployee(employeeId);
+            success = true;
+          }
+          break;
+        case 'INACTIVE':
+          const inactiveResult = await showConfirmationAlert({
+            title: '¿Se trata de un ex-empleado?',
+            text: 'El empleado ya no tiene vinculación laboral, pero sin despido formal',
+            icon: 'question',
+          });
+          if (inactiveResult.isConfirmed) {
+            await markEmployeeAsInactive(employeeId);
+            success = true;
+          }
+          break;
+        default:
+          break;
+      }
 
-    if (success) {
-      setEmployees(prevEmployees =>
-        prevEmployees.map(emp =>
-          emp.id === employeeId ? { ...emp, status: newStatus } : emp
-        )
-      );
+      if (success) {
+        setEmployees(prevEmployees =>
+          prevEmployees.map(emp =>
+            emp.id === employeeId ? { ...emp, status: newStatus } : emp
+          )
+        );
+      }
+    } finally {
+      setUpdatingEmployeeId(null);
     }
   };
 
-  const columns: Column<Employee>[] = [
-    { header: 'Número', key: 'employeeNumber' },
-    { header: 'Username', key: 'username' },
-    { header: 'Nombre', key: 'fullName' },
-    {
-      header: 'Salario',
-      render: (employee) => `${employee.salary.toLocaleString('es-ES')}€`
-    },
-    { header: 'DNI', key: 'dni' },
-    { header: 'Puesto', key: 'jobTitle' },
-    {
-      header: 'Fecha de alta',
-      render: (employee) => new Date(employee.hiringDate).toLocaleDateString('es-ES')
-    },
-    { header: 'Departamento', key: 'department' },
-    {
-      header: 'Estado',
-      render: (employee) => (
-        <select
-          value={employee.status}
-          onChange={(e) => handleStatusChange(employee.id, e.target.value as EmployeeStatus)}
-          className={`status-select status-${employee.status.toLowerCase()}`}
-        >
-          <option value="ACTIVE">Activo</option>
-          <option value="ON_LEAVE">De baja</option>
-          <option value="TERMINATED">Despedido</option>
-          <option value="INACTIVE">Inactivo</option>
-        </select>
-      )
-    }
-  ];
+  if (isLoading) {
+    return <div className="loading-employees">Cargando empleados...</div>;
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
+
+  if (employees.length === 0) {
+    return (
+      <div className="employees-section">
+        <h2>Empleados</h2>
+        <p className="no-employees">
+          No hay empleados disponibles
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <div className="table-container">
-      <Table
-        columns={columns}
-        data={employees}
-        keyExtractor={(employee) => employee.id}
-        isLoading={isLoading}
-        error={error}
-        loadingText="Cargando empleados..."
-        className="employee-table"
-        emptyMessage="No hay empleados disponibles"
-      />
-    </div>
+      <div className="table-container">
+        <table className="employee-table">
+          <thead>
+            <tr>
+              <th>Número</th>
+              <th>Username</th>
+              <th>Nombre</th>
+              <th>Salario</th>
+              <th>DNI</th>
+              <th>Puesto</th>
+              <th>Alta</th>
+              <th>Departamento</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            {employees.map((employee) => {
+              const isUpdating = updatingEmployeeId === employee.id;
+              
+              return (
+                <tr key={employee.id}>
+                  <td>{employee.employeeNumber}</td>
+                  <td>{employee.username}</td>
+                  <td>{employee.fullName}</td>
+                  <td>{`${employee.salary.toLocaleString('es-ES')}€`}</td>
+                  <td>{employee.dni}</td>
+                  <td>{employee.jobTitle}</td>
+                  <td>{new Date(employee.hiringDate).toLocaleDateString('es-ES')}</td>
+                  <td>{employee.department}</td>
+                  <td>
+                    <select
+                      value={employee.status}
+                      onChange={(e) => handleStatusChange(employee.id, e.target.value as EmployeeStatus)}
+                      className={`status-select status-${employee.status.toLowerCase()}`}
+                      disabled={isUpdating}
+                    >
+                      <option value="ACTIVE">Activo</option>
+                      <option value="ON_LEAVE">De baja</option>
+                      <option value="TERMINATED">Despedido</option>
+                      <option value="INACTIVE">Inactivo</option>
+                    </select>
+                    {isUpdating && <span className="updating-indicator"> ⟳</span>}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
   );
 };
 

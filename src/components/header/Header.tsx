@@ -3,14 +3,12 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import './Header.css';
 
-// Define types for navigation items
 interface NavigationItem {
   path: string;
   label: string;
   icon?: string;
 }
 
-// Types for component props
 interface HeaderProps {
   logoText?: string;
   className?: string;
@@ -27,14 +25,12 @@ const Header: React.FC<HeaderProps> = ({
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   
-  // Navigation items configuration
   const navigationItems: NavigationItem[] = [
     { path: '/job-offers', label: 'Ofertas de empleo' },       
     { path: '/corporate-management', label: 'Gestión Corporativa' },
     { path: '/people-analytics', label: 'People Analytics' }
   ];
 
-  // Check if user is logged in on component mount and when authToken changes
   useEffect(() => {
     const checkAuthStatus = () => {
       const token = localStorage.getItem('authToken');
@@ -59,10 +55,8 @@ const Header: React.FC<HeaderProps> = ({
     return () => window.removeEventListener('storage', checkAuthStatus);
   }, []);
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      // Set isScrolled to true when page is scrolled more than 50px
       const scrolled = window.scrollY > 50;
       if (scrolled !== isScrolled) {
         setIsScrolled(scrolled);
@@ -71,7 +65,6 @@ const Header: React.FC<HeaderProps> = ({
 
     window.addEventListener('scroll', handleScroll);
     
-    // Clean up event listener
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -91,7 +84,6 @@ const Header: React.FC<HeaderProps> = ({
     setIsMenuOpen(prev => !prev);
   }, []);
 
-  // Check if a navigation item is active
   const isActive = useCallback((path: string): boolean => {
     return location.pathname === path;
   }, [location.pathname]);

@@ -7,7 +7,7 @@ import RoleProtectedRoute from './components/RoleProtectedRoute';
 import JobDetail from './pages/JobOfferDetail/JobOfferDetail';
 import Login from './pages/Login/Login';
 import SignUp from './pages/Signup/SignUp';
-import { AddJobOfferPage } from './pages/AddJobOffer';
+import { AddJobOfferPage } from './pages/AddJobOffer/AddJobOfferPage';
 import CorporateManagement from './pages/CorporateManagement/CorporateManagement';
 import {PeopleAnalytics} from './pages/PeopleAnalytics/PeopleAnalytics';
 import './App.css';

@@ -1,4 +1,4 @@
-import { FormState } from '../types/addJobOfferForm';
+import { FormState } from '../pages/AddJobOffer/types/addJobOfferForm';
 
 export interface FormErrors {
   [key: string]: string;

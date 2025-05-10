@@ -42,7 +42,6 @@ const StatusSelect: React.FC<StatusSelectProps> = ({
   );
 };
 
-// Opciones predefinidas para distintos casos de uso
 export const employeeStatusOptions: StatusOption[] = [
   { value: 'ACTIVE', label: 'Activo', className: 'status-active' },
   { value: 'INACTIVE', label: 'Inactivo', className: 'status-inactive' },

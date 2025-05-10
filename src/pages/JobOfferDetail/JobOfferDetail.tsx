@@ -10,7 +10,7 @@ import JobRequirementsSection from './components/JobRequirementsSection';
 import ApplicationForm from './components/ApplicationForm';
 import JobActions from './components/JobActions';
 import CandidatesTable from './components/CandidatesTable';
-import HireCandidatePopup from '../../components/hirecandidatepopup/HireCandidatePopup';
+import HireCandidatePopup from './components/hirecandidatepopup/HireCandidatePopup';
 import './JobOfferDetail.css';
 
 const JobDetail: React.FC = () => {

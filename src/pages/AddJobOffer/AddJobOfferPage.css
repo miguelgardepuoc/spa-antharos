@@ -12,7 +12,6 @@
     --border-radius: 8px;
   }
   
-  /* Estilos base */
   * {
     box-sizing: border-box;
   }
@@ -23,25 +22,25 @@
     color: var(--text-primary);
   }
   
-  /* Form Container */
   .job-form-container {
-    background-color: var(--bg-primary);
-    padding-bottom: 2rem;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
   }
   
   .job-form {
-    background-color: var(--bg-white);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-md);
-    padding-bottom: 2rem;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    animation: fadeIn 0.3s ease-out;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    padding: 2rem;
+  }
+  
+  .form-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
   }
   
   @keyframes fadeIn {
@@ -49,7 +48,6 @@
     to { opacity: 1; transform: translateY(0); }
   }
   
-  /* Form Fields */
   .form-field {
     margin-bottom: 1.5rem;
     position: relative;
@@ -95,14 +93,12 @@
     min-height: 120px;
   }
   
-  /* Estilizando placeholder */
   .form-input::placeholder,
   .form-textarea::placeholder {
     color: #94a3b8;
     opacity: 1;
   }
   
-  /* Dropdown */
   .dropdown {
     position: relative;
   }

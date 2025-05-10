@@ -3,13 +3,23 @@ import { Department } from '../../../../types/department';
 
 interface DepartmentTableProps {
   departments: Department[];
+  loading: boolean;
+  error: string | null;
   onRename: (department: Department) => void;
   onDelete: (department: Department) => void;
   onEditHead: (department: Department) => void;
 }
-
-const DepartmentTable: React.FC<DepartmentTableProps> = ({ departments, onRename, onDelete, onEditHead }) => {
+ 
+const DepartmentTable: React.FC<DepartmentTableProps> = ({ departments, loading, error, onRename, onDelete, onEditHead }) => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+
+  if (loading) {
+    return <div className="loading-candidates">Cargando candidatos...</div>;
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
 
   const toggleMenu = (departmentId: string) => {
     if (activeMenu === departmentId) {
@@ -32,15 +42,17 @@ const DepartmentTable: React.FC<DepartmentTableProps> = ({ departments, onRename
 
   if (departments.length === 0) {
     return (
-      <div className="empty-state">
-        <p>No hay departamentos disponibles.</p>
+      <div className="departments-section">
+        <p className="no-departments">
+          Todavía no hay departamentos disponibles
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="department-table-container">
-      <table className="department-table">
+    <div className="departments-table-container">
+      <table className="departments-table">
         <thead>
           <tr>
             <th>Nombre</th>
