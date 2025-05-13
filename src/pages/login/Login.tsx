@@ -2,6 +2,7 @@ import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import { login } from '../../services/authService';
+import useUserRole from '../../hooks/useUserRole';
 
 export default function BookshelfLoginPage() {
   const [username, setUsername] = useState('');
@@ -9,6 +10,7 @@ export default function BookshelfLoginPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { changeUserRole } = useUserRole();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,6 +23,8 @@ export default function BookshelfLoginPage() {
       if ('message' in result) {
         setError(result.message);
       } else {
+        const token = result.token;
+        changeUserRole(token);
         navigate('/');
       }
     } catch (err) {

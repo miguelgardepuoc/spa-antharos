@@ -21,6 +21,7 @@ const Header: React.FC<HeaderProps> = ({ logoText = 'Antharos', className = '' }
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const { clearUserRole } = useUserRole();
 
   const navigationItems: NavigationItem[] = [
     { path: '/job-offers', label: 'Ofertas de empleo' },
@@ -61,6 +62,7 @@ const Header: React.FC<HeaderProps> = ({ logoText = 'Antharos', className = '' }
 
   const handleLogoutClick = useCallback(() => {
     localStorage.removeItem('authToken');
+    clearUserRole();
     setIsLoggedIn(false);
     navigate('/');
   }, [navigate]);

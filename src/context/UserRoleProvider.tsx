@@ -18,8 +18,7 @@ export const UserRoleProvider: React.FC<UserRoleProviderProps> = ({ children }) 
     const token = localStorage.getItem('authToken');
     if (token) {
       try {
-        const decoded = jwtDecode<DecodedToken>(token);
-        setUserRole(decoded.role);
+        changeUserRole(token);
       } catch (error) {
         console.error('Failed to decode token:', error);
         setUserRole(null);
@@ -27,8 +26,17 @@ export const UserRoleProvider: React.FC<UserRoleProviderProps> = ({ children }) 
     }
   }, []);
 
+  const changeUserRole = (token: string) => {
+    const decoded = jwtDecode<DecodedToken>(token);
+    setUserRole(decoded.role);
+  };
+
+  const clearUserRole = () => {
+    setUserRole(null);
+  };
+
   return (
-    <UserRoleContext.Provider value={{ userRole, setUserRole }}>
+    <UserRoleContext.Provider value={{ userRole, changeUserRole, clearUserRole }}>
       {children}
     </UserRoleContext.Provider>
   );

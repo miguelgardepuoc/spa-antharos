@@ -1,6 +1,5 @@
 import apiClient from './apiClient';
 import { AuthResponse, ApiError } from '../types/login';
-import { jwtDecode } from 'jwt-decode';
 
 export const signup = async (
   username: string,
@@ -11,10 +10,6 @@ export const signup = async (
       username,
       password,
     });
-
-    if (response.data.token) {
-      localStorage.setItem('authToken', response.data.token);
-    }
 
     return response.data;
   } catch (error: any) {
@@ -58,10 +53,6 @@ export const login = async (
 
 export const getToken = (): string | null => {
   return localStorage.getItem('authToken');
-};
-
-export const logout = (): void => {
-  localStorage.removeItem('authToken');
 };
 
 export const isAuthenticated = (): boolean => {
