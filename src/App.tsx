@@ -11,6 +11,7 @@ import { AddJobOfferPage } from './pages/AddJobOffer/AddJobOfferPage';
 import CorporateManagement from './pages/CorporateManagement/CorporateManagement';
 import { PeopleAnalytics } from './pages/PeopleAnalytics/PeopleAnalytics';
 import './App.css';
+import { UserRoleProvider } from './context/UserRoleProvider';
 
 const PUBLIC_ROUTES = [
   { path: '/job-offers', element: <JobOfferPortal /> },
@@ -28,44 +29,46 @@ const HeaderWrapper: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <div className="app">
-        <HeaderWrapper />
-        <main>
-          <Routes>
-            {/* Redirect root to job offers */}
-            <Route path="/" element={<Navigate to="/job-offers" replace />} />
+    <UserRoleProvider>
+      <Router>
+        <div className="app">
+          <HeaderWrapper />
+          <main>
+            <Routes>
+              {/* Redirect root to job offers */}
+              <Route path="/" element={<Navigate to="/job-offers" replace />} />
 
-            {PUBLIC_ROUTES.map((route) => (
-              <Route key={route.path} path={route.path} element={route.element} />
-            ))}
+              {PUBLIC_ROUTES.map((route) => (
+                <Route key={route.path} path={route.path} element={route.element} />
+              ))}
 
-            {/* Protected routes */}
-            <Route element={<ProtectedRoute />}>
-              <Route path="/add-job-offer" element={<AddJobOfferPage />} />
-              <Route path="/corporate-management" element={<CorporateManagement />} />
-              <Route path="/people-analytics" element={<PeopleAnalytics />} />
-            </Route>
+              {/* Protected routes */}
+              <Route element={<ProtectedRoute />}>
+                <Route path="/add-job-offer" element={<AddJobOfferPage />} />
+                <Route path="/corporate-management" element={<CorporateManagement />} />
+                <Route path="/people-analytics" element={<PeopleAnalytics />} />
+              </Route>
 
-            <Route
-              element={
-                <RoleProtectedRoute allowedRoles={['DEPARTMENT_HEAD', 'ROLE_COMPANY_MANAGEMENT']} />
-              }
-            >
-              <Route path="/add-job-offer" element={<AddJobOfferPage />} />
-              <Route path="/corporate-management" element={<CorporateManagement />} />
-            </Route>
+              <Route
+                element={
+                  <RoleProtectedRoute allowedRoles={['ROLE_DEPARTMENT_HEAD', 'ROLE_COMPANY_MANAGEMENT']} />
+                }
+              >
+                <Route path="/add-job-offer" element={<AddJobOfferPage />} />
+                <Route path="/corporate-management" element={<CorporateManagement />} />
+              </Route>
 
-            <Route element={<RoleProtectedRoute allowedRoles={['ROLE_COMPANY_MANAGEMENT']} />}>
-              <Route path="/people-analytics" element={<PeopleAnalytics />} />
-            </Route>
+              <Route element={<RoleProtectedRoute allowedRoles={['ROLE_COMPANY_MANAGEMENT']} />}>
+                <Route path="/people-analytics" element={<PeopleAnalytics />} />
+              </Route>
 
-            {/* Catch all route - redirect to job listings */}
-            <Route path="*" element={<Navigate to="/job-offers" replace />} />
-          </Routes>
-        </main>
-      </div>
-    </Router>
+              {/* Catch all route - redirect to job listings */}
+              <Route path="*" element={<Navigate to="/job-offers" replace />} />
+            </Routes>
+          </main>
+        </div>
+      </Router>
+    </UserRoleProvider>
   );
 };
 

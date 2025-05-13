@@ -8,7 +8,7 @@ interface JwtPayload {
 }
 
 const RoleProtectedRoute: React.FC<{ allowedRoles: string[] }> = ({ allowedRoles }) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('authToken');
 
   if (!token) {
     return <Navigate to="/login" replace />;

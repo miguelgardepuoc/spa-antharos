@@ -11,13 +11,15 @@ import ApplicationForm from './components/ApplicationForm';
 import JobActions from './components/JobActions';
 import CandidatesTable from './components/CandidatesTable';
 import HireCandidatePopup from './components/hirecandidatepopup/HireCandidatePopup';
+import useUserRole from "../../hooks/useUserRole";
 import './JobOfferDetail.css';
 
 const JobDetail: React.FC = () => {
   const { id = '' } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const isLoggedIn = Boolean(localStorage.getItem('authToken'));
-  const isEmployee = localStorage.getItem('userRole') == 'ROLE_EMPLOYEE';
+  const { userRole } = useUserRole();
+  const isEmployee = userRole == 'ROLE_EMPLOYEE';
 
   const {
     job,

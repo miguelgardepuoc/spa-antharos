@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
+import useUserRole from "../../hooks/useUserRole";
 import './Header.css';
 
 interface NavigationItem {
@@ -15,10 +15,10 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ logoText = 'Antharos', className = '' }) => {
+  const { userRole } = useUserRole();
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [userRole, setUserRole] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
@@ -32,11 +32,6 @@ const Header: React.FC<HeaderProps> = ({ logoText = 'Antharos', className = '' }
     const checkAuthStatus = () => {
       const token = localStorage.getItem('authToken');
       setIsLoggedIn(!!token);
-
-      if (token) {
-        const userRole = localStorage.getItem('userRole');
-        setUserRole(userRole);
-      }
     };
 
     checkAuthStatus();
@@ -66,7 +61,6 @@ const Header: React.FC<HeaderProps> = ({ logoText = 'Antharos', className = '' }
 
   const handleLogoutClick = useCallback(() => {
     localStorage.removeItem('authToken');
-    localStorage.removeItem('userRole');
     setIsLoggedIn(false);
     navigate('/');
   }, [navigate]);
