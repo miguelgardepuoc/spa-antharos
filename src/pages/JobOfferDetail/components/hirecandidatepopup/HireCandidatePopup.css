@@ -129,7 +129,7 @@
 }
 
 .hire-button:hover {
-  background-color: #333;
+  background-color: var(--secondary-color);
 }
 
 .loading-departments {

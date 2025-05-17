@@ -106,10 +106,23 @@ const CorporateManagement: React.FC = () => {
       await deleteDepartment(selectedDepartment.id);
       setDepartments(departments.filter((dept) => dept.id !== selectedDepartment.id));
       setShowDeleteModal(false);
-    } catch (err) {
-      setError('Error al eliminar el departamento');
-      console.error(err);
-    }
+      } catch (error: any) {
+          console.error('Error deleting department:', error);
+    
+          let errorMessage = 'Ha ocurrido un error. Por favor, inténtalo de nuevo más tarde.';
+          if (error?.response?.status === 422 && error?.response?.data?.errors[0].code == 'DEPARTMENT_HAS_ACTIVE_EMPLOYEES') {
+              errorMessage = 'El departamento tiene empleados activos. Por favor, verifica.';
+          }
+
+          setShowDeleteModal(false);
+    
+          Swal.fire({
+            title: 'Error',
+            text: errorMessage,
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+          });
+        }
   };
 
   const handleAddDepartment = async () => {
@@ -131,19 +144,14 @@ const CorporateManagement: React.FC = () => {
 
     try {
       await updateDepartmentHead(selectedDepartment.id, newDepartmentHead);
-      setDepartments(
-        departments.map((dept) =>
-          dept.id === selectedDepartment.id
-            ? { ...dept, departmentHeadFullName: newDepartmentHead }
-            : dept
-        )
-      );
+      const departmentsData = await fetchDepartments();
+      setDepartments(departmentsData);
       setShowEditHeadModal(false);
       setNewDepartmentHead('');
     } catch (error: any) {
       console.error('Error al actualizar el responsable del departamento', error);
 
-      let errorMessage = '';
+      let errorMessage = 'Usuario no puede ser asignado como responsable';
       if (error?.response?.status === 422) {
         const errors = error?.response?.data?.errors;
         const errorCode = Array.isArray(errors) && errors.length > 0 ? errors[0].code : null;
@@ -156,9 +164,6 @@ const CorporateManagement: React.FC = () => {
           case 'USER_IS_NOT_EMPLOYEE':
             errorMessage =
               'El usuario es parte de la dirección o ya es responsable de otro departamento. Por favor, revisa la información.';
-            break;
-          default:
-            errorMessage = 'Usuario no puede ser asignado como responsable';
             break;
         }
       }

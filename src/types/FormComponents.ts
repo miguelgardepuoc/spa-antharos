@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent } from 'react';
+import { ChangeEvent, JSX } from 'react';
 
 export interface TextFieldProps {
   label: string;

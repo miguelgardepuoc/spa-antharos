@@ -68,7 +68,7 @@ const JobOfferPortal: React.FC = () => {
         {isLoggedIn && (
           <button className="add-job-button" onClick={handleAddJobClick}>
             <img
-              src="/src/assets/plus-icon.svg"
+              src="/plus-icon.svg"
               alt="Plus icon"
               style={{
                 height: '2em',

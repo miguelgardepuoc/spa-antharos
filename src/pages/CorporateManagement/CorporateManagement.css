@@ -197,6 +197,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-size: 16px;
 }
 
 .cancel-button {
@@ -209,14 +210,33 @@
   background-color: var(--light-gray);
 }
 
+.delete-button {
+  background-color: transparent;
+  color: var(--danger-color);
+  border: 1px solid var(--danger-color);
+}
+
+.delete-button:hover {
+  background-color: #fee2e2;
+}
+
 .confirm-button {
   background-color: var(--primary-color);
   color: var(--white);
   border: 1px solid var(--medium-gray);
+  margin-top: 1.5rem;
 }
 
 .confirm-button:hover {
   background-color: var(--secondary-color);
+}
+
+.delete-button {
+  margin-top: 1.5rem;
+}
+
+.delete-button:hover {
+  margin-top: 1.5rem;
 }
 
 .modal-actions .delete-button {

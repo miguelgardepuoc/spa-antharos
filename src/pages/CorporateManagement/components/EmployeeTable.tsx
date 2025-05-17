@@ -9,6 +9,8 @@ import {
 import { showConfirmationAlert } from '../../../utils/alerts';
 import Table from '../../../components/common/table/Table';
 
+const FINAL_STATUSES = ['INACTIVE', 'TERMINATED'];
+
 const EmployeeTable: React.FC = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -98,6 +100,7 @@ const EmployeeTable: React.FC = () => {
   ];
 
   const renderEmployeeRow = (employee: Employee) => {
+    const isFinalStatus = FINAL_STATUSES.includes(employee.status);
     const isUpdating = updatingEmployeeId === employee.id;
 
     return (
@@ -115,7 +118,7 @@ const EmployeeTable: React.FC = () => {
             value={employee.status}
             onChange={(e) => handleStatusChange(employee.id, e.target.value as EmployeeStatus)}
             className={`status-select status-${employee.status.toLowerCase()}`}
-            disabled={isUpdating}
+            disabled={isFinalStatus || isUpdating}
           >
             <option value="ACTIVE">Activo</option>
             <option value="ON_LEAVE">De baja</option>
