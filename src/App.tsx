@@ -5,18 +5,18 @@ import JobOfferPortal from './pages/JobOfferPortal/JobOfferPortal';
 import ProtectedRoute from './components/ProtectedRoute';
 import RoleProtectedRoute from './components/RoleProtectedRoute';
 import JobDetail from './pages/JobOfferDetail/JobOfferDetail';
-import Login from './pages/Login/Login';
 import SignUp from './pages/Signup/SignUp';
 import { AddJobOfferPage } from './pages/AddJobOffer/AddJobOfferPage';
 import CorporateManagement from './pages/CorporateManagement/CorporateManagement';
 import { PeopleAnalytics } from './pages/PeopleAnalytics/PeopleAnalytics';
 import './App.css';
 import { UserRoleProvider } from './context/UserRoleProvider';
+import BookshelfLoginPage from './pages/Login/Login';
 
 const PUBLIC_ROUTES = [
   { path: '/job-offers', element: <JobOfferPortal /> },
   { path: '/job-offer/:id', element: <JobDetail /> },
-  { path: '/login', element: <Login /> },
+  { path: '/login', element: <BookshelfLoginPage /> },
   { path: '/signup', element: <SignUp /> },
 ];
 
