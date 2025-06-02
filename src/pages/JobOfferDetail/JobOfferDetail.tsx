@@ -30,6 +30,8 @@ const JobDetail: React.FC = () => {
     isDeleting,
   } = useJobOffer(id, navigate);
 
+  const shouldFetchCandidates = isLoggedIn && !isEmployee;
+
   const {
     candidates,
     loading: loadingCandidates,
@@ -41,7 +43,7 @@ const JobDetail: React.FC = () => {
     showHirePopup,
     setShowHirePopup,
     setSelectedCandidate,
-  } = useCandidates(id);
+  } = useCandidates(shouldFetchCandidates ? id : null);
 
   const {
     email,

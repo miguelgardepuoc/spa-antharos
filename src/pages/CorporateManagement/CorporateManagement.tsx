@@ -129,8 +129,9 @@ const CorporateManagement: React.FC = () => {
     if (!newDepartment.trim()) return;
 
     try {
-      const department = await addDepartment(newDepartment);
-      setDepartments([...departments, department]);
+      await addDepartment(newDepartment);
+      const departmentsData = await fetchDepartments();
+      setDepartments(departmentsData);
       setShowAddModal(false);
       setNewDepartment('');
     } catch (err) {
@@ -164,6 +165,10 @@ const CorporateManagement: React.FC = () => {
           case 'USER_IS_NOT_EMPLOYEE':
             errorMessage =
               'El usuario es parte de la dirección o ya es responsable de otro departamento. Por favor, revisa la información.';
+            break;
+          case 'EMPLOYEE_DIFF_DEPARTMENT':
+            errorMessage =
+              'El usuario pertenece a otro departamento. Por favor, revisa la información.';
             break;
         }
       }

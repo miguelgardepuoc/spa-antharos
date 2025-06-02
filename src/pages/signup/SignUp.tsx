@@ -2,6 +2,7 @@ import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signup } from '../../services/authService';
 import './SignUp.css';
+import { showAlert } from '../../utils/alerts';
 
 export default function SignUp() {
   const [username, setUsername] = useState('');
@@ -31,10 +32,19 @@ export default function SignUp() {
 
     try {
       const result = await signup(username, password);
-      console.log('Signup successful:', result);
-      navigate('/login');
+      if (result && typeof result === 'object' && 'message' in result && !('token' in result)) {
+        await showAlert({
+          title: 'Error en el registro',
+          text: 'Se ha producido un error. Por favor, verifica que el nombre de usuario es correcto.',
+          icon: 'error',
+          confirmButtonText: 'Entendido'
+        });
+        setApiError(result.message);
+      } else {
+        navigate('/login');
+      }
     } catch (err) {
-      console.log('Signup successful:', err);
+      console.log("Error: ", err)
       setApiError('An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { JobOffer } from '../../types/jobOffer';
 import { fetchJobOffers } from '../../services/jobOfferService';
 import JobCard from './components/jobcard/JobCard';
+import useUserRole from "../../hooks/useUserRole";
 import './JobOfferPortal.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,6 +12,8 @@ const JobOfferPortal: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { userRole } = useUserRole();
+  const isEmployee = userRole == 'ROLE_EMPLOYEE';
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
@@ -65,7 +68,7 @@ const JobOfferPortal: React.FC = () => {
             <JobCard job={job} />
           </div>
         ))}
-        {isLoggedIn && (
+        {isLoggedIn && !isEmployee && (
           <button className="add-job-button" onClick={handleAddJobClick}>
             <img
               src="/plus-icon.svg"

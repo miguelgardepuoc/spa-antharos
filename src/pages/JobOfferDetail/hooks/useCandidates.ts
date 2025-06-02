@@ -9,7 +9,7 @@ import { hireCandidate } from '../../../services/employeeService';
 import { Candidate } from '../../../types/candidate';
 import { HireData } from '../../../types/hireCandidateForm';
 
-export const useCandidates = (jobOfferId: string) => {
+export const useCandidates = (jobOfferId: string | null) => {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +28,7 @@ export const useCandidates = (jobOfferId: string) => {
   const fetchCandidatesData = async () => {
     try {
       setLoading(true);
-      const data = await fetchCandidatesByJobOffer(jobOfferId);
+      const data = await fetchCandidatesByJobOffer(jobOfferId as string);
       setCandidates(data);
       setError(null);
     } catch (err) {
